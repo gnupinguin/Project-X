@@ -15,7 +15,7 @@
    </style>
    <body >
       <div class="">
-         <h2 align="center">Добавьте цитату</h2>
+         <h2 align="center">Цитатник</h2>
       </div>
       <div class="col-md-6 col-md-offset-3" >
          <form action="/add" method='post'>
