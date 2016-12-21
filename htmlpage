@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Цитата</title>
+   </head>
+   <style>
+      body{
+      font-family: "Montserrat",sans-serif;
+      font-size: 16px;
+      }
+   </style>
+   <body >
+      <div class="">
+         <h2 align="center">Цитатник</h2>
+      </div>
+      <div class="col-md-6 col-md-offset-3" >
+         <form action="/add" method='post'>
+            <div class="form-group">
+               <div class="form-group">
+                  <label for="quote">Добавьте цитату:</label>
+                  <textarea required="required" name="quote" class="form-control" rows="2" placeholder="Введите цитату.Например:''Есть преступления хуже, чем сжигать книги. Например - не читать их''" ></textarea>
+               </div>
+               <div class="form-group">
+                  <label for="author">Автор:</label>
+                  <input required="required" name="author" type="text" class="form-control" placeholder="Введите имя автора.Например: Рэй Брэдбери">
+               </div>
+               <button type="submit" class="btn btn-default" name="form1" style="background-image: none;" >Добавить</button>
+            </div>
+         </form>
+      </div>
+   </body>
+</html>
