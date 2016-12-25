@@ -14,6 +14,6 @@
 		<code lang="sh"> sudo cpan -i MongoDB</code>
 	</li>
 </ol>
-Затем переходим в папку server  и запускаем сервер: <code lang="sh"> perl server.pl daemon</code> <br />
+Затем переходим в папку server  и запускаем сервер: <code lang="sh"> morbo server.pl daemon</code> <br />
 По умолчанию сервер слушает http://127.0.0.1:3000
 </p>
