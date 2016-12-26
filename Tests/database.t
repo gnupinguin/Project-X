@@ -5,8 +5,16 @@ use utf8;
 use open qw/:encoding(UTF-8) :std/;
 use Test::Simple tests => 7;
 
-my $client = MongoDB->connect(); # localhost, port 27107
-my $collection = $client->ns( 'QuotesDB.quotes' );
+my $dbConnectionString;
+
+if ($ARGV[0] eq "dbconnect"){
+	(undef, $dbConnectionString) = (shift, shift);
+}
+
+my $dbclient = MongoDB->connect($dbConnectionString);
+
+
+my $collection = $dbclient->ns( 'QuotesDB.quotes' );
 my @records = (["Быть или не быть - вот в чем вопрос", "У. Шекспир"],
 ["Veni, Vedi, Veci", "A. Makedonskiy"],
 ["Жизнь - это очень короткое время между двумя 456 вечностями", "Карлейль Т."]);#3 quotes
