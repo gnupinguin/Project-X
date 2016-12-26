@@ -15,5 +15,7 @@
 	</li>
 </ol>
 Затем переходим в папку server  и запускаем сервер: <code lang="sh"> morbo server.pl daemon</code> <br />
-По умолчанию сервер слушает http://127.0.0.1:3000
+По умолчанию сервер слушает http://127.0.0.1:3000<br />
+Если необходимо добавить свои настройки подключения к базе данных, то после server.pl вызывается флаг dbconnect, которому передается строка подключения. <br/>
+Например: <code lang="sh"> morbo server.pl dbconnect mongodb://localhost:27017 daemon</code>
 </p>
