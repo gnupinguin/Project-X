@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Status</title>
+</head>
+<body>
+<h1> <%= $message %></h1>
+<%= link_to "Start page" => 'index' %>
+<a href="/file.html">Add new</a>
+</body>
+</html>
