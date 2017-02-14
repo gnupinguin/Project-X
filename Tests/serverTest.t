@@ -47,8 +47,8 @@ $req->content('quote= &author= &form1=');
 ok ($ua->request($req)->code != 200, "Both fields are space");
 
 my $collection = $dbclient->ns( 'QuotesDB.quotes' );
-$collection->delete_many({"author"=>""});
-$collection->delete_many({"quotestext"=>""});
-$collection->delete_many({"author"=>" "});
-$collection->delete_many({"quotestext"=>" "});
+#$collection->delete_many({"author"=>""});
+#$collection->delete_many({"quotestext"=>""});
+$collection->delete_many({"author"=>qr/^\s*$/});
+$collection->delete_many({"quotestext"=>qr/^\s*$/});
 
