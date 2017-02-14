@@ -21,19 +21,20 @@ post '/add' => sub {
   my $c = shift;
   $@ = undef;
   eval{
-    
-
     my $collection = $dbclient->ns( 'QuotesDB.quotes' );
+		die "Empty author" if $c->param("author") =~ m/^\s*$/;
+		die "Empty quote" if $c->param("quote") =~ m/^\s*$/;
     $collection->insert_one({author => $c->param("author"), quotestext => $c->param("quote")});
   };
   if ($@){
     say "ERROR adding quotes!\n$@";
-    $c->render(template => "status", message =>  "ERROR adding quotes!");
-  }
-
+    $c->render(template => "status", message =>  "ERROR adding quotes!\n$@", status => 401);
+  }else{
+		$c->render(template => "status", message => "Quote added successfully!");
+	}
 
   #say "\n\nOK\n";
-  $c->render(template => "status", message => "Quote added successfully!");
+
 };
 
 get '/data' => sub {
