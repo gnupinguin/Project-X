@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Status</title>
 </head>
+<style>
+      body{
+      background: url(baground.jpg);
+      background-size: cover;
+      font-family: "Montserrat",sans-serif;
+      font-size: 16px;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: "Montserrat",sans-serif;
+      font-size: 16px;
+      }
+   </style>
 <body>
-<h1> <%= $message %></h1>
-<%= link_to "Start page" => 'index' %>
-<a href="/file.html">Add new</a>
+<h1 align="center"> <%= $message %></h1>
+<p><a href="/file.html"><font color="black" size=5>Add a new quotation</font></a></p>
+			<p><a href="/data"><font color="black" size=5>My collection</font></a></p>
+			<p><a href="/practise.html"><font color="black" size=5>Start page</font></a></p>
 </body>
 </html>
