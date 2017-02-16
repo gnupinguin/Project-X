@@ -1,4 +1,4 @@
-package quoter;
+package quote;
 
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Serializer;
@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.Map;
+import java.util.Properties;
 
 public class QuoteSerializer implements Serializer<Quote> {
     private ObjectMapper mapper = new QuoteMapper();
+
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {

@@ -1,11 +1,12 @@
-package quote;
+package producer;
 
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import quote.Quote;
 
-public class QuoteMain {
+public class LocalTopicProducer {
     public static void main(String[] args) {
         Properties props = new Properties();
         props.put("bootstrap.servers", "192.168.62.221:9092");
@@ -22,7 +23,6 @@ public class QuoteMain {
         for(int i = 0; i < 10; i++) {
             quoteProducer.send(new ProducerRecord<String, Quote>("Hello", Integer.toString(i), new Quote("Julio","Juliette")));
         }
-
         quoteProducer.close();
     }
 }
