@@ -32,7 +32,7 @@ public class ReplicaTopicConsumer {
        //     return;
         // }
 
-        String topic = "replica";
+        String topic = "quote-replica";
         //String group = args[1].toString();
         Properties props = new Properties();
         props.put("bootstrap.servers", "192.168.62.221:9092");
