@@ -15,6 +15,7 @@ public class LocalTopicProducer {
         props.put("batch.size", 16384);
         props.put("linger.ms", 1);
         props.put("buffer.memory", 33554432);
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "quote.QuoteSerializer");
 
         KafkaProducer<String, Quote> quoteProducer;
@@ -23,5 +24,6 @@ public class LocalTopicProducer {
             quoteProducer.send(new ProducerRecord<String, Quote>("quote-local", Integer.toString(i), new Quote("Julio","Juliette")));
         }
         quoteProducer.close();
+        System.out.printf("Finish!\n");
     }
 }

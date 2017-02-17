@@ -64,7 +64,8 @@ public class ReplicaTopicConsumer {
        while (true) {
            ConsumerRecords<String, Quote> records = consumer.poll(100);
            for (ConsumerRecord<String, Quote> record : records) {
-               BasicDBObject Quote = new BasicDBObject("author", record.value().getQuoteAuthor()).append("qutestext", record.value().getQuoteText());
+               BasicDBObject Quote = new BasicDBObject("author",
+                       record.value().getQuoteAuthor()).append("quotestext", record.value().getQuoteText());
                coll.insert(Quote);
 
            }

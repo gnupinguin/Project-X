@@ -1,0 +1,7 @@
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/quote/QuoteSerializer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/consumer/LocalTopicConsumer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/quote/QuoteMapper.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/quote/QuoteDeserializer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/quote/Quote.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/producer/LocalTopicProducer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/consumer/ReplicaTopicConsumer.java
