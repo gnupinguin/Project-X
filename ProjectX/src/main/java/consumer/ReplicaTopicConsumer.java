@@ -1,5 +1,6 @@
 package consumer;
 
+import java.io.FileInputStream;
 import java.util.Properties;
 import java.util.Arrays;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -27,20 +28,18 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class ReplicaTopicConsumer {
     public static void main(String[] args) throws Exception {
-       // if(args.length < 2){
-       //     System.out.println("Usage: consumer <topic> <groupname>");
-       //     return;
-        // }
+
 
         String topic = "quote-replica";
         Properties props = new Properties();
-        props.put("bootstrap.servers", "192.168.62.221:9092");
+        props.load(new FileInputStream("target/config/local-consumer/PropConsumer.properties"));
+        /*props.put("bootstrap.servers", "192.168.62.221:9092");
         props.put("group.id", "0");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
         props.put("session.timeout.ms", "30000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "quote.QuoteDeserializer");
+        props.put("value.deserializer", "quote.QuoteDeserializer");*/
         KafkaConsumer<String, Quote> consumer = new KafkaConsumer<String, Quote>(props);
 
         consumer.subscribe(Arrays.asList(topic));
