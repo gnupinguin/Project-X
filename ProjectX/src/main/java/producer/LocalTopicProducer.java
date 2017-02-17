@@ -26,4 +26,8 @@ public class LocalTopicProducer {
         quoteProducer.close();
         System.out.printf("Finish!\n");
     }
+    /*@Override
+    public void run(){
+
+    }*/
 }

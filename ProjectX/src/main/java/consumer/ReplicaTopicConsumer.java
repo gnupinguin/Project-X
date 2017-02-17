@@ -33,7 +33,6 @@ public class ReplicaTopicConsumer {
         // }
 
         String topic = "quote-replica";
-        //String group = args[1].toString();
         Properties props = new Properties();
         props.put("bootstrap.servers", "192.168.62.221:9092");
         props.put("group.id", "0");
@@ -51,15 +50,6 @@ public class ReplicaTopicConsumer {
         DB db = mongoClient.getDB( "QuotesDB" );
         DBCollection coll = db.getCollection("quotes");
 
-        /*DBCursor cursor = coll.find();
-        try {
-            while(cursor.hasNext()) {
-                System.out.println(cursor.next());
-            }
-        } finally {
-            cursor.close();
-        }*/
-
 
        while (true) {
            ConsumerRecords<String, Quote> records = consumer.poll(100);
@@ -69,10 +59,6 @@ public class ReplicaTopicConsumer {
                coll.insert(Quote);
 
            }
-               /*BasicDBObject Quote = new BasicDBObject("", "QuotesDB").append("count", 1);
-                       coll.insert(doc);*/
-         //       System.out.printf("offset = %d, key = %s, value = %s\n",
-         //               record.offset(), record.key(), record.value());
         }
     }
 }

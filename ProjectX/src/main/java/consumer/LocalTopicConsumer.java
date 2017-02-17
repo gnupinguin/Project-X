@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import quote.Quote;
 
+import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -20,42 +21,24 @@ public class LocalTopicConsumer {
 
 
     public static void main(String[] args) throws Exception {
+        String producerInnerReplicaPropertiesFilename = "target/config/local-consumer/producerInnerReplica.properties";
+        String producerOuterReplicaPropertiesFilename = "target/config/local-consumer/producerOuterReplica.properties";
+        String consumerPropertiesFileName = "target/config/local-consumer/consumerProperties.properties";
 
         Properties producerInnerReplicaProperties = new Properties();
-        producerInnerReplicaProperties.put("bootstrap.servers", "192.168.62.221:9092");
-        producerInnerReplicaProperties.put("acks", "all");
-        producerInnerReplicaProperties.put("retries", 0);
-        producerInnerReplicaProperties.put("batch.size", 16384);
-        producerInnerReplicaProperties.put("linger.ms", 1);
-        producerInnerReplicaProperties.put("buffer.memory", 33554432);
-        producerInnerReplicaProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        producerInnerReplicaProperties.put("value.serializer", "quote.QuoteSerializer");
+        producerInnerReplicaProperties.load(new FileInputStream(producerInnerReplicaPropertiesFilename));
 
         Properties producerOuterReplicaProperties = new Properties();
-        producerOuterReplicaProperties.put("bootstrap.servers", "192.168.62.191:9092");
-        producerOuterReplicaProperties.put("acks", "all");
-        producerOuterReplicaProperties.put("retries", 0);
-        producerOuterReplicaProperties.put("batch.size", 16384);
-        producerOuterReplicaProperties.put("linger.ms", 1);
-        producerOuterReplicaProperties.put("buffer.memory", 33554432);
-        producerOuterReplicaProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        producerOuterReplicaProperties.put("value.serializer", "quote.QuoteSerializer");
+        producerOuterReplicaProperties.load(new FileInputStream(producerOuterReplicaPropertiesFilename));
 
         Properties consumerProperties = new Properties();
-        consumerProperties.put("bootstrap.servers", "192.168.62.221:9092");
-        consumerProperties.put("group.id", "0");
-        consumerProperties.put("enable.auto.commit", "true");
-        consumerProperties.put("auto.commit.interval.ms", "1000");
-        consumerProperties.put("session.timeout.ms", "30000");
-        consumerProperties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        consumerProperties.put("value.deserializer", "quote.QuoteDeserializer");
+        consumerProperties.load(new FileInputStream(consumerPropertiesFileName));
 
         KafkaConsumer<String, Quote> consumer = new KafkaConsumer<String, Quote>(consumerProperties);
         KafkaProducer<String, Quote> producerInnerReplica = new KafkaProducer<String, Quote>(producerInnerReplicaProperties);
         KafkaProducer<String, Quote> producerOuterReplica = new KafkaProducer<String, Quote>(producerOuterReplicaProperties);
 
         consumer.subscribe(Arrays.asList(LOCAL_TOPIC));
-
         while (true) {
             ConsumerRecords<String, Quote> records = consumer.poll(100);
             for (ConsumerRecord<String, Quote> record : records){

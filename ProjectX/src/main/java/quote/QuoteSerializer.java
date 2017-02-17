@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.Map;
-import java.util.Properties;
 
 public class QuoteSerializer implements Serializer<Quote> {
     private ObjectMapper mapper = new QuoteMapper();
