@@ -25,19 +25,15 @@
    <div class="container">
   <h1 align="center">MY COLLECTION</h1><br>
 
-
-
-    <#list quotes?keys as quotestext>
-        <div class="media">
-            <div class="media-body">
-                <p>${quotestext}</p>
-                <h4 class="media-heading" align="right">${quotes[quotestext]}</h4>
-            </div>
-        </div>
-        <hr>
-    <#--${key} = ${quotes[key]}-->
-    </#list>
-
+       <#list quotes as quote>
+           <div class="media">
+               <div class="media-body">
+                   <p>${quote.quotestext}</p>
+                   <h4 class="media-heading" align="right">${quote.author}</h4>
+               </div>
+           </div>
+           <hr>
+       </#list>
 
 </body>
 </html>
