@@ -2,7 +2,7 @@ package ru.dins.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.dins.model.Quote;
+import ru.dins.model.quote.Quote;
 import ru.dins.persistence.ProjectXRepository;
 
 import java.util.List;

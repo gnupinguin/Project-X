@@ -16,7 +16,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>producer.LocalTopicProducer</mainClass>
+                            <mainClass>ru.dins.producer.LocalTopicProducer</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -91,6 +91,12 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.4.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.dins</groupId>
+            <artifactId>project-x-spring-server</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

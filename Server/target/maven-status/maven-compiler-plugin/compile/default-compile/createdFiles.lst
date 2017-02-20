@@ -1,2 +1,8 @@
-demo/Application.class
-demo/SimpleController.class
+ru/dins/model/quote/QuoteDeserializer.class
+ru/dins/model/quote/Quote.class
+ru/dins/model/quote/QuoteMapper.class
+ru/dins/controller/ProjectXController.class
+ru/dins/Application.class
+ru/dins/model/quote/QuoteSerializer.class
+ru/dins/service/ProjectXService.class
+ru/dins/persistence/ProjectXRepository.class

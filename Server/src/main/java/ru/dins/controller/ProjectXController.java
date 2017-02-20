@@ -6,8 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.dins.model.Quote;
 import ru.dins.service.ProjectXService;
+import ru.dins.model.quote.Quote;
 
 import java.util.regex.Pattern;
 
@@ -36,15 +36,15 @@ public class ProjectXController {
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String addQuote(@RequestParam(value = "quote") String quotestext,
+    public String addQuote(@RequestParam(value = "quote") String quoteText,
                            @RequestParam(value = "author") String author,
                            Model model){
 
         try{
-            if (NO_EMPTY_STRING_PATTERN.matcher(quotestext).find() || NO_EMPTY_STRING_PATTERN.matcher(author).find())
+            if (NO_EMPTY_STRING_PATTERN.matcher(quoteText).find() || NO_EMPTY_STRING_PATTERN.matcher(author).find())
                 throw new RuntimeException();
 
-            projectXService.insertQuote(new Quote(quotestext, author));
+            projectXService.insertQuote(new Quote(author, quoteText));
             model.addAttribute("message", SUCCESS_MESSAGE);
         } catch (Exception e){
             System.out.println(e);
@@ -55,6 +55,7 @@ public class ProjectXController {
 
     @RequestMapping(value = "/data")
     public String showQuotes(Model model){
+        System.out.println(projectXService.findAll());
         model.addAttribute("quotes", projectXService.findAll());
         return "data";
     }
