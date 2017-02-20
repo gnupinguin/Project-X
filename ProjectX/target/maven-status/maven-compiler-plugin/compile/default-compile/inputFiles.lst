@@ -1,7 +1,7 @@
-/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/quote/QuoteSerializer.java
-/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/consumer/LocalTopicConsumer.java
-/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/quote/QuoteMapper.java
-/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/quote/QuoteDeserializer.java
-/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/quote/Quote.java
-/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/producer/LocalTopicProducer.java
-/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/consumer/ReplicaTopicConsumer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/ru/dins/consumer/ProjectXConsumer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/ru/dins/producer/QuoteProducer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/ru/dins/producer/ProjectXProducer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/ru/dins/consumer/QuoteConsumer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/ru/dins/Demo.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/ru/dins/consumer/ReplicaTopicConsumer.java
+/home/gnupinguin/Projects/Project-X/ProjectX/src/main/java/ru/dins/consumer/LocalTopicConsumerProducer.java

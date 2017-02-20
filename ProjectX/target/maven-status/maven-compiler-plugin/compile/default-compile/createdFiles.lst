@@ -1,0 +1,7 @@
+ru/dins/producer/ProjectXProducer.class
+ru/dins/consumer/LocalTopicConsumerProducer.class
+ru/dins/consumer/ReplicaTopicConsumer.class
+ru/dins/producer/QuoteProducer.class
+ru/dins/consumer/ProjectXConsumer.class
+ru/dins/Demo.class
+ru/dins/consumer/QuoteConsumer.class

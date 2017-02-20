@@ -10,7 +10,7 @@ import ru.dins.model.quote.Quote;
 /**
  * Created by dins on 16.02.17.
  */
-public class ImplementProducer implements ProjectXProducer
+public class QuoteProducer implements ProjectXProducer
 {
     private long key = 0;
 
@@ -20,19 +20,19 @@ public class ImplementProducer implements ProjectXProducer
     protected long incrementKey(){return key++;}
     private KafkaProducer<String, Quote> quoteProducer;
 
-    public ImplementProducer(Properties props,  String topicName){
+    public QuoteProducer(Properties props, String topicName){
         quoteProducer = new KafkaProducer<String, Quote>(props);
         this.topicName = topicName;
     }
 
-    public ImplementProducer(String propertiesFilename,  String topicName) throws IOException{
+    public QuoteProducer(String propertiesFilename, String topicName) throws IOException{
         Properties props = new Properties();
         props.load(new FileInputStream(propertiesFilename));
         quoteProducer = new KafkaProducer<String, Quote>(props);
         this.topicName = topicName;
     }
 
-    public void addOuoteInQueue(Quote quote){
+    public void addQuoteInQueue(Quote quote){
         quoteProducer.send(new ProducerRecord<String, Quote>(getTopicName(), Long.toString(incrementKey()), quote));
     }
 
