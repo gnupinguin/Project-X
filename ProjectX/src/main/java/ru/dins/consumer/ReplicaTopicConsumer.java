@@ -1,13 +1,7 @@
 package ru.dins.consumer;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.mongodb.BasicDBObject;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
