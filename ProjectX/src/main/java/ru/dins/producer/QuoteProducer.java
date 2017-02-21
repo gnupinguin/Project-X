@@ -17,7 +17,7 @@ public class QuoteProducer implements ProjectXProducer
     @Getter
     private String topicName;
 
-    protected long incrementKey(){return key++;}
+    private long incrementKey(){return key++;}
     private KafkaProducer<String, Quote> quoteProducer;
 
     public QuoteProducer(Properties props, String topicName){
@@ -34,6 +34,11 @@ public class QuoteProducer implements ProjectXProducer
 
     public void addQuoteInQueue(Quote quote){
         quoteProducer.send(new ProducerRecord<String, Quote>(getTopicName(), Long.toString(incrementKey()), quote));
+    }
+
+    public QuoteProducer(KafkaProducer<String, Quote> quoteProducer, String topicName){
+        this.quoteProducer = quoteProducer;
+        this.topicName = topicName;
     }
 
     public void close() {

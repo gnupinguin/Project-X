@@ -1,8 +1,8 @@
-/home/gnupinguin/Projects/Project-X/Server/src/main/java/ru/dins/model/quote/QuoteDeserializer.java
-/home/gnupinguin/Projects/Project-X/Server/src/main/java/ru/dins/Application.java
-/home/gnupinguin/Projects/Project-X/Server/src/main/java/ru/dins/persistence/ProjectXRepository.java
-/home/gnupinguin/Projects/Project-X/Server/src/main/java/ru/dins/controller/ProjectXController.java
-/home/gnupinguin/Projects/Project-X/Server/src/main/java/ru/dins/model/quote/QuoteSerializer.java
-/home/gnupinguin/Projects/Project-X/Server/src/main/java/ru/dins/service/ProjectXService.java
-/home/gnupinguin/Projects/Project-X/Server/src/main/java/ru/dins/model/quote/Quote.java
-/home/gnupinguin/Projects/Project-X/Server/src/main/java/ru/dins/model/quote/QuoteMapper.java
+/home/dins/Projects/Project-X/Server/src/main/java/ru/dins/model/quote/Quote.java
+/home/dins/Projects/Project-X/Server/src/main/java/ru/dins/Application.java
+/home/dins/Projects/Project-X/Server/src/main/java/ru/dins/persistence/ProjectXRepository.java
+/home/dins/Projects/Project-X/Server/src/main/java/ru/dins/model/quote/QuoteDeserializer.java
+/home/dins/Projects/Project-X/Server/src/main/java/ru/dins/controller/ProjectXController.java
+/home/dins/Projects/Project-X/Server/src/main/java/ru/dins/service/ProjectXService.java
+/home/dins/Projects/Project-X/Server/src/main/java/ru/dins/model/quote/QuoteMapper.java
+/home/dins/Projects/Project-X/Server/src/main/java/ru/dins/model/quote/QuoteSerializer.java

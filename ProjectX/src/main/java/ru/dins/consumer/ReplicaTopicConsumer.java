@@ -26,7 +26,8 @@ public class ReplicaTopicConsumer extends QuoteConsumer  {
 
     public ReplicaTopicConsumer(String consunerPropertiesFilename, String topicName,
              String host, int port, String dbName, String collectionName) throws IOException {
-        super(consunerPropertiesFilename, topicName); MongoClient mongoClient = new MongoClient( host, port );
+        super(consunerPropertiesFilename, topicName);
+        MongoClient mongoClient = new MongoClient( host, port );
         DB db = mongoClient.getDB( dbName);
         quotesDbCollection = db.getCollection(collectionName  );
 
@@ -47,9 +48,7 @@ public class ReplicaTopicConsumer extends QuoteConsumer  {
     }
 
     @Override
-    public void close() {
-        super.close();
-    }
+    public void close() { super.close(); }
 //    public static void main(String[] args) throws Exception {
 //
 //
