@@ -6,9 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.dins.kafka.producer.ProjectXProducer;
+import ru.dins.kafka.producer.QuoteProducer;
 import ru.dins.service.ProjectXService;
 import ru.dins.model.quote.Quote;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 
@@ -19,6 +22,15 @@ import java.util.regex.Pattern;
 public class ProjectXController {
     @Autowired
     private ProjectXService projectXService;
+
+    private ProjectXProducer producer;
+    {
+        try{
+            producer = new QuoteProducer("target/config_kafka/producer.properties", "quote-local");
+        }catch(IOException e){
+            System.out.println("\nNot found properties for producer!\n");
+        }
+    }
 
     private static final String ERROR_MESSAGE = "When creating quotes error occurred!";
     private static final String SUCCESS_MESSAGE = "Quote has been created successfully!";
@@ -43,8 +55,7 @@ public class ProjectXController {
         try{
             if (NO_EMPTY_STRING_PATTERN.matcher(quoteText).find() || NO_EMPTY_STRING_PATTERN.matcher(author).find())
                 throw new RuntimeException();
-
-            projectXService.insertQuote(new Quote(author, quoteText));
+            producer.addQuoteInQueue(new Quote(author, quoteText));
             model.addAttribute("message", SUCCESS_MESSAGE);
         } catch (Exception e){
             System.out.println(e);
@@ -55,7 +66,6 @@ public class ProjectXController {
 
     @RequestMapping(value = "/data")
     public String showQuotes(Model model){
-        System.out.println(projectXService.findAll());
         model.addAttribute("quotes", projectXService.findAll());
         return "data";
     }
