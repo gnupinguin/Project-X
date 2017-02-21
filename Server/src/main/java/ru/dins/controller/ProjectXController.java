@@ -20,20 +20,23 @@ import java.util.regex.Pattern;
  */
 @Controller
 public class ProjectXController {
+    private static final String ERROR_ADDING_QUOTE_MESSAGE = "When creating quotes error occurred!";
+    private static final String SUCCESS_ADDING_QUOTE_MESSAGE = "Quote has been created successfully!";
+
+
     @Autowired
     private ProjectXService projectXService;
 
     private ProjectXProducer producer;
     {
         try{
-            producer = new QuoteProducer("target/config_kafka/producer.properties", "quote-local");
+            producer = new QuoteProducer("src/main/kafka-conf/producer.properties", "quote-local");
         }catch(IOException e){
             System.out.println("\nNot found properties for producer!\n");
         }
     }
 
-    private static final String ERROR_MESSAGE = "When creating quotes error occurred!";
-    private static final String SUCCESS_MESSAGE = "Quote has been created successfully!";
+
 
     private static final Pattern NO_EMPTY_STRING_PATTERN = Pattern.compile("^\\s*$");
 
@@ -56,10 +59,10 @@ public class ProjectXController {
             if (NO_EMPTY_STRING_PATTERN.matcher(quoteText).find() || NO_EMPTY_STRING_PATTERN.matcher(author).find())
                 throw new RuntimeException();
             producer.addQuoteInQueue(new Quote(author, quoteText));
-            model.addAttribute("message", SUCCESS_MESSAGE);
+            model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);
         } catch (Exception e){
             System.out.println(e);
-            model.addAttribute("message", ERROR_MESSAGE);
+            model.addAttribute("message", ERROR_ADDING_QUOTE_MESSAGE);
         }
         return "status";
     }

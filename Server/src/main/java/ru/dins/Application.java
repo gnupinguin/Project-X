@@ -18,14 +18,14 @@ public class Application {
         String localTopicName = "quote-local";
         String replicaTopicName = "quote-replica";
 
-        QuoteConsumer localConsumer = new QuoteConsumer("target/config_kafka/localTopicConsumer.properties", localTopicName);
-        QuoteProducer innerReplicaProducer = new QuoteProducer("target/config_kafka/innerReplicaProducer.properties", replicaTopicName);
-        QuoteProducer outerReplicaProducer = new QuoteProducer("target/config_kafka/outerReplicaProducer.properties", replicaTopicName);
+        QuoteConsumer localConsumer = new QuoteConsumer("src/main/kafka-conf/localTopicConsumer.properties", localTopicName);
+        QuoteProducer innerReplicaProducer = new QuoteProducer("src/main/kafka-conf/innerReplicaProducer.properties", replicaTopicName);
+        QuoteProducer outerReplicaProducer = new QuoteProducer("src/main/kafka-conf/outerReplicaProducer.properties", replicaTopicName);
 
         LocalTopicConsumerThread localTopicConsumerThread = new LocalTopicConsumerThread(innerReplicaProducer, outerReplicaProducer, localConsumer);
 
 
-        QuoteConsumer replicaConsumer = new QuoteConsumer("target/config_kafka/replicaTopicConsumer.properties", replicaTopicName);
+        QuoteConsumer replicaConsumer = new QuoteConsumer("src/main/kafka-conf/replicaTopicConsumer.properties", replicaTopicName);
         ReplicaTopicConsumerThread replicaTopicConsumerThread = new ReplicaTopicConsumerThread(replicaConsumer,
                 "localhost", 27017, "QuotesDB", "quotes");
 
