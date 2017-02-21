@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface ProjectXConsumer extends Closeable {
     List<Quote> readQuotesFromQueue();
-    void saveQuotes(List<Quote> quotes);
 
+    @Override
+    void close();
 }

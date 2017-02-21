@@ -10,4 +10,7 @@ import java.io.Closeable;
 public interface ProjectXProducer extends Closeable{
     void addQuoteInQueue(Quote quote);
 
+    @Override
+    void close();
+
 }

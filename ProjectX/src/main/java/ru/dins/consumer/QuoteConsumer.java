@@ -16,6 +16,7 @@ import java.util.*;
 public class QuoteConsumer implements ProjectXConsumer {
 
     private KafkaConsumer<String, Quote> quoteConsumer;
+
     @Getter
     private String topicName;
 
@@ -24,6 +25,7 @@ public class QuoteConsumer implements ProjectXConsumer {
         this.topicName = topicName;
         quoteConsumer.subscribe(Arrays.asList(topicName));
     }
+
     public QuoteConsumer(String consumerPropertiesFilename, String topicName) throws IOException{
         Properties props = new Properties();
         props.load(new FileInputStream(consumerPropertiesFilename));
@@ -32,22 +34,17 @@ public class QuoteConsumer implements ProjectXConsumer {
         quoteConsumer.subscribe(Arrays.asList(topicName));
     }
 
+    @Override
     public List<Quote> readQuotesFromQueue() {
-        ConsumerRecords<String, Quote> records = quoteConsumer.poll(1000);
-
+        ConsumerRecords<String, Quote> records = quoteConsumer.poll(100);
         List<Quote> result = new ArrayList<Quote>(records.count());
-
         for (ConsumerRecord<String, Quote> record : records){
             result.add(record.value());
         }
         return result;
     }
 
-    public void saveQuotes(List<Quote> quotes) {
-        //nothing to do
-    }
-
-
+    @Override
     public void close() {
         quoteConsumer.close();
     }
