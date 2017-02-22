@@ -38,7 +38,8 @@ public class QuoteProducer implements ProjectXProducer
 
     @Override
     public void addQuoteInQueue(Quote quote){
-         quoteProducer.send(new ProducerRecord<String, Quote>(getTopicName(), Long.toString(incrementKey()), quote));
+            quoteProducer.send(new ProducerRecord<String, Quote>(getTopicName(), Long.toString(incrementKey()), quote));
+
     }
 
     @Override

@@ -1,33 +1,38 @@
-package ru.dins.kafka.consumer;
+package ru.dins.kafka;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import org.apache.kafka.common.errors.WakeupException;
-
+import ru.dins.kafka.consumer.ProjectXConsumer;
+import ru.dins.kafka.producer.ProjectXProducer;
 import ru.dins.model.quote.Quote;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ReplicaTopicConsumerThread implements Runnable  {
+/**
+ * Created by gnupinguin on 22.02.17.
+ */
+public class QuoteOuterSynchronizer implements Runnable{
     private DBCollection quotesDbCollection;
     private ProjectXConsumer consumer;
+    private AtomicBoolean closed = new AtomicBoolean(false);
 
-    private final AtomicBoolean closed = new AtomicBoolean(false);
-
-    public ReplicaTopicConsumerThread(ProjectXConsumer consumer, String host, int port, String dbName, String collectionName) {
-        this.consumer = consumer;
+    public QuoteOuterSynchronizer(ProjectXConsumer consumer, String host, int port, String dbName, String collectionName){
         MongoClient mongoClient = new MongoClient(host, port);
         DB db = mongoClient.getDB(dbName);
         quotesDbCollection = db.getCollection(collectionName);
+        this.consumer = consumer;
     }
 
     @Override
     public void run() {
         try {
-            while (!closed.get()) {
-                for (Quote quote : consumer.readQuotesFromQueue()) {
+            while (!closed.get()){
+                List<Quote> quotes = consumer.readQuotesFromQueue();
+                for (Quote quote : quotes) {
                     quotesDbCollection.insert(new BasicDBObject("quoteText", quote.getQuoteText())
                             .append("quoteAuthor", quote.getQuoteAuthor())
                             .append("_class", quote.getClass().getCanonicalName()));
@@ -35,11 +40,8 @@ public class ReplicaTopicConsumerThread implements Runnable  {
             }
         } catch (WakeupException e) {
             if (!closed.get()) throw e;
-        } finally {
-            System.out.println("\nReplicaTopicConsumer was interrupted\n");
-            consumer.close();
+        }finally {
+            System.out.println("OUTER SYNC INTERRUPTED");
         }
     }
 }
-
-

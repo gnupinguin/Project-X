@@ -3,16 +3,10 @@ package ru.dins;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
-import ru.dins.kafka.LocalKafkaQuoteSynchonizer;
-import ru.dins.kafka.QuoteSynchronizer;
-import ru.dins.kafka.consumer.LocalTopicConsumerThread;
-import ru.dins.kafka.consumer.ProjectXConsumer;
+import ru.dins.kafka.QuoteLocalSynchronizer;
+import ru.dins.kafka.QuoteOuterSynchronizer;
 import ru.dins.kafka.consumer.QuoteConsumer;
-import ru.dins.kafka.consumer.ReplicaTopicConsumerThread;
 import ru.dins.kafka.producer.QuoteProducer;
-import ru.dins.model.quote.Quote;
-
-import java.util.List;
 
 /**
  * Created by gnupinguin on 18.02.17.
@@ -27,23 +21,19 @@ public class Application {
         QuoteConsumer innerLocalConsumer = new QuoteConsumer("src/main/kafka-conf/localTopicConsumer.properties", localTopicName);
         QuoteConsumer outerReplicaConsumer = new QuoteConsumer("src/main/kafka-conf/outerReplicaConsumer.properties", replicaTopicName);
 
-        QuoteProducer producer = new QuoteProducer("src/main/kafka-conf/producer.properties", localTopicName);
+//        QuoteProducer innerLocalProducer = new QuoteProducer("src/main/kafka-conf/producer.properties", localTopicName);
+//
         QuoteProducer innerReplicaProducer = new QuoteProducer("src/main/kafka-conf/innerReplicaProducer.properties", replicaTopicName);
 
-        QuoteSynchronizer localKafkaSynchonizer = new LocalKafkaQuoteSynchonizer(innerReplicaProducer, innerLocalConsumer,
+        QuoteLocalSynchronizer quoteLocalSynchronizer = new QuoteLocalSynchronizer(innerReplicaProducer, innerLocalConsumer,
                 "localhost", 27017, "QuotesDB", "quotes");
 
-        QuoteSynchronizer adjacentKafkaSynchronizer = new QuoteSynchronizer(producer, outerReplicaConsumer);
+        QuoteOuterSynchronizer quoteOuterSynchronizer = new QuoteOuterSynchronizer(outerReplicaConsumer,
+                "localhost", 27017, "QuotesDB", "quotes");
 
 
-
-//        QuoteConsumer replicaConsumer = new QuoteConsumer("src/main/kafka-conf/replicaTopicConsumer.properties", replicaTopicName);
-//        ReplicaTopicConsumerThread replicaTopicConsumerThread = new ReplicaTopicConsumerThread(replicaConsumer,
-//                "localhost", 27017, "QuotesDB", "quotes");
-
-
-        new Thread(localKafkaSynchonizer).start();
-        new Thread(adjacentKafkaSynchronizer).start();
+        new Thread(quoteOuterSynchronizer).start();
+        new Thread(quoteLocalSynchronizer).start();
 
 
         SpringApplication.run(Application.class, args);
