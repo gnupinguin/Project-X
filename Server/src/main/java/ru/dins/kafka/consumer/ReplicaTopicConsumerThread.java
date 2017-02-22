@@ -18,9 +18,9 @@ public class ReplicaTopicConsumerThread implements Runnable  {
 
     public ReplicaTopicConsumerThread(ProjectXConsumer consumer, String host, int port, String dbName, String collectionName) {
         this.consumer = consumer;
-        MongoClient mongoClient = new MongoClient( host, port );
+        MongoClient mongoClient = new MongoClient(host, port);
         DB db = mongoClient.getDB(dbName);
-        quotesDbCollection = db.getCollection(collectionName  );
+        quotesDbCollection = db.getCollection(collectionName);
     }
 
     @Override

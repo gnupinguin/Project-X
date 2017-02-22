@@ -3,6 +3,7 @@ package ru.dins.kafka.producer;
 import lombok.Getter;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import ru.dins.model.quote.Quote;
 
 import java.io.FileInputStream;
@@ -37,7 +38,7 @@ public class QuoteProducer implements ProjectXProducer
 
     @Override
     public void addQuoteInQueue(Quote quote){
-        quoteProducer.send(new ProducerRecord<String, Quote>(getTopicName(), Long.toString(incrementKey()), quote));
+         quoteProducer.send(new ProducerRecord<String, Quote>(getTopicName(), Long.toString(incrementKey()), quote));
     }
 
     @Override

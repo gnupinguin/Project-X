@@ -2,6 +2,7 @@ package ru.dins.kafka.consumer;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
 import ru.dins.model.quote.Quote;
 import ru.dins.kafka.producer.ProjectXProducer;
@@ -33,6 +34,7 @@ public class LocalTopicConsumerThread implements Runnable{
                 for (Quote quote : quotes){
                     producerInnerReplica.addQuoteInQueue(quote);
                     producerOuterReplica.addQuoteInQueue(quote);
+
                 }
             }
         }catch (WakeupException e){

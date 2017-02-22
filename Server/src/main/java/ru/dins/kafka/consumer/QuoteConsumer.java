@@ -1,6 +1,7 @@
 package ru.dins.kafka.consumer;
 
 import lombok.Getter;
+import lombok.NonNull;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -21,6 +22,7 @@ public class QuoteConsumer implements ProjectXConsumer {
     private KafkaConsumer<String, Quote> quoteConsumer;
 
     @Getter
+    @NonNull
     private String topicName;
 
     public QuoteConsumer(Properties props, String topicName){
@@ -44,6 +46,7 @@ public class QuoteConsumer implements ProjectXConsumer {
         for (ConsumerRecord<String, Quote> record : records){
             result.add(record.value());
         }
+
         return result;
     }
 
