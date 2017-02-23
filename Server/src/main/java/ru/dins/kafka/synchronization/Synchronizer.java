@@ -15,6 +15,7 @@ import java.util.List;
 public abstract class Synchronizer implements Runnable {
     @NonNull
     private DBCollection quotesDbCollection;
+
     public void perform(List<Quote> quotes){
         for (Quote quote : quotes) {
             quotesDbCollection.insert(new BasicDBObject("quoteText", quote.getQuoteText())

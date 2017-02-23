@@ -9,6 +9,7 @@ import ru.dins.kafka.synchronization.QuoteLocalSynchronizer;
 import ru.dins.kafka.synchronization.QuoteOuterSynchronizer;
 import ru.dins.kafka.consumer.QuoteConsumer;
 import ru.dins.kafka.producer.QuoteProducer;
+import ru.dins.kafka.synchronization.Synchronizer;
 
 /**
  * Created by gnupinguin on 18.02.17.
@@ -26,13 +27,11 @@ public class Application {
         QuoteProducer innerReplicaProducer = new QuoteProducer("src/main/kafka-conf/innerReplicaProducer.properties", replicaTopicName);
 
         DBCollection quotesDbCollection = new Mongo("localhost", 27017).getDB("QuotesDB").getCollection("quotes");
-        QuoteLocalSynchronizer quoteLocalSynchronizer = new QuoteLocalSynchronizer(innerReplicaProducer, innerLocalConsumer, quotesDbCollection);
-
-        QuoteOuterSynchronizer quoteOuterSynchronizer = new QuoteOuterSynchronizer(outerReplicaConsumer, quotesDbCollection);
+        Synchronizer quoteLocalSynchronizer = new QuoteLocalSynchronizer(innerReplicaProducer, innerLocalConsumer, quotesDbCollection);
+        Synchronizer quoteOuterSynchronizer = new QuoteOuterSynchronizer(outerReplicaConsumer, quotesDbCollection);
 
         new Thread(quoteLocalSynchronizer).start();
         new Thread(quoteOuterSynchronizer).start();
-
 
         SpringApplication.run(Application.class, args);
     }
