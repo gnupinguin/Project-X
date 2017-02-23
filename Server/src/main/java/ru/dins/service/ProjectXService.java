@@ -1,6 +1,7 @@
 package ru.dins.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ru.dins.model.quote.Quote;
 import ru.dins.persistence.ProjectXRepository;
@@ -13,10 +14,11 @@ import java.util.List;
 @Service
 public class ProjectXService {
     @Autowired
-    ProjectXRepository repository;
+    private ProjectXRepository repository;
 
     public List<Quote> findAll() {
         return repository.findAll();
     }
+
     public void insertQuote(Quote quote){repository.addQuote(quote);}
 }

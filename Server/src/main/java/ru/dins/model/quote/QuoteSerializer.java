@@ -10,7 +10,6 @@ import java.util.Map;
 public class QuoteSerializer implements Serializer<Quote> {
     private ObjectMapper mapper = new QuoteMapper();
 
-
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
         // nothing to do
