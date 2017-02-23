@@ -31,7 +31,7 @@ public class ProjectXController {
     private ProjectXProducer producer;
     {
         try{
-            producer = new QuoteProducer("src/main/kafka-conf/producer.properties", "quote-local");
+            producer = new QuoteProducer("src/main/kafka-conf/innerLocalProducer.properties", "quote-local");
         }catch(IOException e){
             System.out.println("\nNot found properties for producer!\n");
         }
@@ -52,6 +52,7 @@ public class ProjectXController {
                            @RequestParam(value = "author") String author,
                            Model model){
         try{
+
             quoteText = quoteText.trim();
             author = author.trim();
 
