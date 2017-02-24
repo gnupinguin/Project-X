@@ -15,24 +15,24 @@ hs_err_pid*
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/**/workspace.xml
-.idea/**/tasks.xml
+.Server/idea/**/workspace.xml
+Server/.idea/**/tasks.xml
 
 # Sensitive or high-churn files:
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.xml
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
+Server/.idea/**/dataSources/
+Server/.idea/**/dataSources.ids
+Server/.idea/**/dataSources.xml
+Server/.idea/**/dataSources.local.xml
+Server/.idea/**/sqlDataSources.xml
+Server/.idea/**/dynamic.xml
+Server/.idea/**/uiDesigner.xml
 
 # Gradle:
-.idea/**/gradle.xml
-.idea/**/libraries
+Server/.idea/**/gradle.xml
+Server/.idea/**/libraries
 
 # Mongo Explorer plugin:
-.idea/**/mongoSettings.xml
+Server/.idea/**/mongoSettings.xml
 
 ## File-based project format:
 *.iws
@@ -40,30 +40,30 @@ hs_err_pid*
 ## Plugin-specific files:
 
 # IntelliJ
-/out/
+Server/out/
 
 # mpeltonen/sbt-idea plugin
-.idea_modules/
+Server/.idea_modules/
 
 # JIRA plugin
-atlassian-ide-plugin.xml
+Server/atlassian-ide-plugin.xml
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
+Server/com_crashlytics_export_strings.xml
+Server/crashlytics.properties
+Server/crashlytics-build.properties
+Server/fabric.properties
 
 
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
+Server/target/
+Server/pom.xml.tag
+Server/pom.xml.releaseBackup
+Server/pom.xml.versionsBackup
+Server/pom.xml.next
+Server/release.properties
+Server/dependency-reduced-pom.xml
+Server/buildNumber.properties
+Server/.mvn/timing.properties
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
