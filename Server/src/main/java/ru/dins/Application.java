@@ -31,7 +31,7 @@ public class Application {
         Synchronizer quoteOuterSynchronizer = new QuoteOuterSynchronizer(outerReplicaConsumer, quotesDbCollection);
 
         new Thread(quoteLocalSynchronizer).start();
-        //new Thread(quoteOuterSynchronizer).start();
+        new Thread(quoteOuterSynchronizer).start();
 
         SpringApplication.run(Application.class, args);
     }
