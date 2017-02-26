@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.apache.kafka.common.errors.WakeupException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.dins.kafka.consumer.ProjectXConsumer;
 import ru.dins.kafka.producer.ProjectXProducer;
 import ru.dins.web.model.quote.Quote;
@@ -18,6 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by gnupinguin on 22.02.17.
  */
 @Data
+@Service
 public class QuoteLocalSynchronizer implements Runnable {
     @NonNull
     private ProjectXProducer producer;
@@ -46,7 +48,7 @@ public class QuoteLocalSynchronizer implements Runnable {
                 throw e;
             }
         } finally {
-            System.out.println("\nLOCAL SYNC IS INTERRUPTED\n");
+            System.err.println("\nLOCAL SYNC IS INTERRUPTED\n");
             consumer.close();
             producer.close();
         }

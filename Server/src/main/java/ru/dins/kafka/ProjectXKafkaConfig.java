@@ -8,6 +8,7 @@ import ru.dins.kafka.consumer.QuoteConsumer;
 import ru.dins.kafka.producer.ProjectXProducer;
 import ru.dins.kafka.producer.QuoteProducer;
 import ru.dins.kafka.synchronization.QuoteLocalSynchronizer;
+import ru.dins.kafka.synchronization.QuoteOuterSynchronizer;
 
 import java.io.IOException;
 
@@ -75,5 +76,8 @@ public class ProjectXKafkaConfig {
                                                          @Qualifier("innerLocalTopicConsumerFromFile")ProjectXConsumer consumer){
         return new QuoteLocalSynchronizer(producer, consumer);
     }
-
+    @Bean
+    public QuoteOuterSynchronizer quoteOuterSynchronizer(@Qualifier("innerLocalTopicConsumerFromFile")ProjectXConsumer consumer){
+        return new QuoteOuterSynchronizer(consumer);
+    }
 }
