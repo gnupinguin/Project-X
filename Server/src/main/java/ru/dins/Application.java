@@ -4,35 +4,30 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
-import ru.dins.kafka.synchronization.QuoteLocalSynchronizer;
-import ru.dins.kafka.synchronization.QuoteOuterSynchronizer;
-import ru.dins.kafka.consumer.QuoteConsumer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ImportResource;
+import ru.dins.kafka.producer.ProjectXProducer;
 import ru.dins.kafka.producer.QuoteProducer;
-import ru.dins.kafka.synchronization.Synchronizer;
+import ru.dins.kafka.synchronization.QuoteLocalSynchronizer;
+import ru.dins.web.model.quote.Quote;
+import ru.dins.web.service.ProjectXService;
+
+import java.util.List;
 
 /**
  * Created by gnupinguin on 18.02.17.
  */
 @SpringBootApplication
-@Controller
+@ImportResource({"classpath*:KafkaFilesConfigurationContext.xml"})
 public class Application {
     public static void main(String[] args) throws Exception {
-        String localTopicName = "quote-local";
-        String replicaTopicName = "quote-replica";
 
-        QuoteConsumer innerLocalConsumer = new QuoteConsumer("src/main/kafka-conf/localTopicConsumer.properties", localTopicName);
-        QuoteConsumer outerReplicaConsumer = new QuoteConsumer("src/main/kafka-conf/outerReplicaConsumer.properties", replicaTopicName);
+//
+//        new Thread(quoteLocalSynchronizer).start();
+//        new Thread(quoteOuterSynchronizer).start();
 
-        QuoteProducer innerReplicaProducer = new QuoteProducer("src/main/kafka-conf/innerReplicaProducer.properties", replicaTopicName);
+        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+        new Thread(context.getBean(QuoteLocalSynchronizer.class)).start();
 
-        DBCollection quotesDbCollection = new Mongo("localhost", 27017).getDB("QuotesDB").getCollection("quotes");
-        Synchronizer quoteLocalSynchronizer = new QuoteLocalSynchronizer(innerReplicaProducer, innerLocalConsumer, quotesDbCollection);
-        Synchronizer quoteOuterSynchronizer = new QuoteOuterSynchronizer(outerReplicaConsumer, quotesDbCollection);
-
-        new Thread(quoteLocalSynchronizer).start();
-        new Thread(quoteOuterSynchronizer).start();
-
-        SpringApplication.run(Application.class, args);
     }
 }

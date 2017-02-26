@@ -1,4 +1,4 @@
-package ru.dins.model.quote;
+package ru.dins.web.model.quote;
 
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @NoArgsConstructor
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Quote {
     @NonNull
     private String quoteAuthor;

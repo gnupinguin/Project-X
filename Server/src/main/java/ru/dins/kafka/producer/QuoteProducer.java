@@ -4,8 +4,11 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
-import ru.dins.model.quote.Quote;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
+import ru.dins.web.model.quote.Quote;
+import ru.dins.web.service.ProjectXService;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,6 +29,7 @@ public class QuoteProducer implements ProjectXProducer
     public QuoteProducer(Properties props, String topicName){
         quoteProducer = new KafkaProducer<>(props);
         this.topicName = topicName;
+
     }
 
     public QuoteProducer(String propertiesFilename, String topicName) throws IOException{

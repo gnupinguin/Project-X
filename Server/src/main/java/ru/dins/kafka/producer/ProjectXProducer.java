@@ -1,7 +1,6 @@
 package ru.dins.kafka.producer;
 
-import org.apache.kafka.clients.producer.RecordMetadata;
-import ru.dins.model.quote.Quote;
+import ru.dins.web.model.quote.Quote;
 
 import java.io.Closeable;
 

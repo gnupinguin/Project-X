@@ -1,4 +1,4 @@
-package ru.dins.model.quote;
+package ru.dins.web.model.quote;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;

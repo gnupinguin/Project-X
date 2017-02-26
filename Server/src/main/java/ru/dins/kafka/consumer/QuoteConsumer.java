@@ -5,7 +5,7 @@ import lombok.NonNull;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import ru.dins.model.quote.Quote;
+import ru.dins.web.model.quote.Quote;
 
 import java.io.FileInputStream;
 import java.io.IOException;

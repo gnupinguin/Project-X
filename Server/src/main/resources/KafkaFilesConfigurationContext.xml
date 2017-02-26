@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="localTopic" class="java.lang.String">
+        <!--<constructor-arg type="java.lang.String" value="quote-local" />-->
+        <constructor-arg type="java.lang.String" value="quote-local" />
+    </bean>
+
+    <bean name="replicaTopic" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="quote-replica" />
+    </bean>
+
+    <bean name="innerLocalTopicProducer" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/home/gnupinguin/Projects/Project-X/kafka-conf/innerLocalProducer.properties" />
+    </bean>
+
+    <bean name="innerReplicaTopicProducer" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/home/gnupinguin/Projects/Project-X/kafka-conf/innerReplicaProducer.properties"/>
+    </bean>
+
+    <bean name="innerLocalTopicConsumer" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/home/gnupinguin/Projects/Project-X/kafka-conf/localTopicConsumer.properties"/>
+    </bean>
+
+    <bean name="outerReplicaTopicConsumer" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/home/gnupinguin/Projects/Project-X/kafka-conf/outerReplicaConsumer.properties"/>
+    </bean>
+
+</beans>

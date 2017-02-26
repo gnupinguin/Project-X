@@ -7,11 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Server" />
+        <module name="project-x-spring-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Server" target="1.8" />
+      <module name="project-x-spring-server" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

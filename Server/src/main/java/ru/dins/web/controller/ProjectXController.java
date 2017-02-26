@@ -1,24 +1,26 @@
-package ru.dins.controller;
+package ru.dins.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.dins.kafka.producer.ProjectXProducer;
-import ru.dins.kafka.producer.QuoteProducer;
-import ru.dins.service.ProjectXService;
-import ru.dins.model.quote.Quote;
+import ru.dins.web.service.ProjectXService;
+import ru.dins.web.model.quote.Quote;
 
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 
 /**
  * Created by gnupinguin on 19.02.17.
  */
+
 @Controller
+@ImportResource({"classpath*:KafkaFilesConfigurationContext.xml"})
 public class ProjectXController {
     private static final String ERROR_ADDING_QUOTE_MESSAGE = "When creating quotes error occurred!";
     private static final String SUCCESS_ADDING_QUOTE_MESSAGE = "Quote has been created successfully!";
@@ -28,14 +30,10 @@ public class ProjectXController {
     @Autowired
     private ProjectXService projectXService;
 
+    @Autowired
+    @Qualifier("innerLocalTopicProducerFromFile")
     private ProjectXProducer producer;
-    {
-        try{
-            producer = new QuoteProducer("src/main/kafka-conf/innerLocalProducer.properties", "quote-local");
-        }catch(IOException e){
-            System.out.println("\nNot found properties for producer!\n");
-        }
-    }
+
 
     @RequestMapping("/")
     public String index(){
