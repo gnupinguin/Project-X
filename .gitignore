@@ -69,5 +69,5 @@ Server/.mvn/timing.properties
 !/.mvn/wrapper/maven-wrapper.jar
 
 #config kafka files
-Server/src/main/kafka-conf/*
+kafka-conf/*
 
