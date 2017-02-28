@@ -29,8 +29,8 @@
        <#list quotes as quote>
            <div class="media">
                <div class="media-body">
-                   <p>${quote.quoteText}</p>
-                   <h4 class="media-heading" align="right">${quote.quoteAuthor}</h4>
+                   <p>${quote.text}</p>
+                   <h4 class="media-heading" align="right">${quote.author}</h4>
                </div>
            </div>
            <hr>

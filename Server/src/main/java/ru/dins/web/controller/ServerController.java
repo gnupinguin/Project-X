@@ -8,8 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.dins.kafka.producer.ProjectXProducer;
-import ru.dins.web.service.ProjectXService;
+import ru.dins.kafka.producer.QuoteProducer;
+import ru.dins.web.persistence.QuoteRepository;
 import ru.dins.web.model.quote.Quote;
 
 import java.util.regex.Pattern;
@@ -20,20 +20,17 @@ import java.util.regex.Pattern;
  */
 
 @Controller
-@ImportResource({"classpath*:KafkaFilesConfigurationContext.xml"})
-public class ProjectXController {
+public class ServerController {
     private static final String ERROR_ADDING_QUOTE_MESSAGE = "When creating quotes error occurred!";
     private static final String SUCCESS_ADDING_QUOTE_MESSAGE = "Quote has been created successfully!";
 
     private static final Pattern NO_EMPTY_STRING_PATTERN = Pattern.compile("^\\s*$");
 
     @Autowired
-    private ProjectXService projectXService;
+    private QuoteRepository repository;
 
     @Autowired
-    @Qualifier("innerLocalTopicProducerFromFile")
-    private ProjectXProducer producer;
-
+    private QuoteProducer producer;
 
     @RequestMapping("/")
     public String index(){
@@ -56,7 +53,7 @@ public class ProjectXController {
 
             if (NO_EMPTY_STRING_PATTERN.matcher(quoteText).find() || NO_EMPTY_STRING_PATTERN.matcher(author).find())
                 throw new RuntimeException();
-            producer.addQuoteInQueue(new Quote(author, quoteText));
+            producer.addQuote2MainPartitionLocalTopic(new Quote(author, quoteText));
             model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);
         } catch (Exception e){
             System.out.println(e);
@@ -67,7 +64,7 @@ public class ProjectXController {
 
     @RequestMapping(value = "/data")
     public String showQuotes(Model model){
-        model.addAttribute("quotes", projectXService.findAll());
+        model.addAttribute("quotes", repository.findAll());
         return "data";
     }
 

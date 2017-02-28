@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @RequiredArgsConstructor
 public class Quote {
     @NonNull
-    private String quoteAuthor;
+    private String author;
 
     @NonNull
-    private String quoteText;
+    private String text;
 }

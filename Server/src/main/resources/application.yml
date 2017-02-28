@@ -1,0 +1,22 @@
+spring:
+  data:
+    mongodb:
+      database: QuotesDB
+      collection: quotes
+      host: localhost
+      port: 27017
+  mandatory-file-encoding: UTF-8
+server:
+  port: 8080
+
+kafka:
+  local-topic-name: quote-local
+  replica-topic-name: quote-replica
+  main-partition-local-topic: 0
+  reserve-partition-local-topic: 1
+  producer-path: kafka-conf/innerProducer.properties
+  inner-local-topic-consumer-path: kafka-conf/localTopicConsumer.properties
+  outer-replica-topic-consumer-path: kafka-conf/outerReplicaConsumer.properties
+
+
+
