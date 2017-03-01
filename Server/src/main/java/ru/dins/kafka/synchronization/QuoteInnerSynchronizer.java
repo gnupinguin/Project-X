@@ -42,21 +42,32 @@ public class QuoteInnerSynchronizer implements Runnable {
     public void run() {
         try{
             while (!closed.get()){
+                boolean isSuccessConnection2DB = true;
                 List<Quote> quotes = mainPartitionConsumer.readQuotesFromQueue();
                 if (quotes != null){
-                    List<Quote> nonReceivedQuotes = reservePartitionConsumer.readQuotesFromQueue();
-                    if (nonReceivedQuotes != null){
-                        quotes.addAll(nonReceivedQuotes);
-                    }
                     for (Quote quote : quotes) {
                         try{
                             repository.addQuote(quote);
                         } catch (Exception e){
+                            isSuccessConnection2DB = false;
                             producer.addQuote2ReservePartitionLocalTopic(quote);
                         }
                         producer.addQuote2ReplicaTopic(quote);
                     }
                 }
+                if (isSuccessConnection2DB){
+                    List<Quote> nonReceivedQuotes = reservePartitionConsumer.readQuotesFromQueue();
+                    if (nonReceivedQuotes != null){
+                        for (Quote quote : nonReceivedQuotes) {
+                            try{
+                                repository.addQuote(quote);
+                            } catch (Exception e){
+                                producer.addQuote2ReservePartitionLocalTopic(quote);
+                            }
+                        }
+                    }
+                }
+
             }
         } catch (WakeupException e){
             if (!closed.get()){
