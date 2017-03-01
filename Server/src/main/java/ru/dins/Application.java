@@ -16,6 +16,6 @@ public class Application {
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
         new Thread(context.getBean(QuoteInnerSynchronizer.class)).start();
-//        new Thread(context.getBean(QuoteOuterSynchronizer.class)).start();
+        new Thread(context.getBean(QuoteOuterSynchronizer.class)).start();
     }
 }

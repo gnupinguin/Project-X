@@ -67,7 +67,6 @@ public class QuoteInnerSynchronizer implements Runnable {
                         }
                     }
                 }
-
             }
         } catch (WakeupException e){
             if (!closed.get()){
