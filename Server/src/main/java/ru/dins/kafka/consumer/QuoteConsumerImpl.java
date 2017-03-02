@@ -1,12 +1,10 @@
 package ru.dins.kafka.consumer;
 
+import javafx.util.Pair;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,31 +14,26 @@ import ru.dins.kafka.producer.QuoteProducerImpl;
 import ru.dins.web.model.quote.Quote;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by gnupinguin on 20.02.17.
  */
-@Service @Data @NoArgsConstructor
+@Service  @NoArgsConstructor
 public class QuoteConsumerImpl implements QuoteConsumer {
     @NonNull
     private Consumer<String, Quote> consumer;
 
-    public QuoteConsumerImpl(String consumerPropertiesFilename, String topicName) throws IOException{
-        Properties props = new Properties();
-        props.load(new ClassPathResource(consumerPropertiesFilename).getInputStream());
-        consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList(topicName));
-    }
+    private final int DEFAULT_PARTITION = 0;
+
+    private TopicPartition topicPartition;
 
     public QuoteConsumerImpl(String consumerPropertiesFilename, TopicPartition topicPartition) throws IOException{
         Properties props = new Properties();
         props.load(new ClassPathResource(consumerPropertiesFilename).getInputStream());
         consumer = new KafkaConsumer<>(props);
         consumer.assign(Arrays.asList(topicPartition));
+        this.topicPartition = topicPartition;
     }
 
     @Bean
@@ -76,7 +69,7 @@ public class QuoteConsumerImpl implements QuoteConsumer {
             @Value("${kafka.outer-replica-topic-consumer-path}")String filename,
             @Value("${kafka.replica-topic-name}")String topic){
         try{
-            return new QuoteConsumerImpl(filename, topic);
+            return new QuoteConsumerImpl(filename, new TopicPartition(topic, DEFAULT_PARTITION));
         } catch (IOException e){
             System.err.println("Error initialization outer replica topic mainPartitionConsumer");
             System.err.println(e);
@@ -92,6 +85,26 @@ public class QuoteConsumerImpl implements QuoteConsumer {
             result.add(record.value());
         }
         return result;
+    }
+
+    @Override
+    public Map<Long, Quote> readQuotesFromQueueWithOffsets() {
+        ConsumerRecords<String, Quote> records = consumer.poll(100);
+        Map<Long, Quote> result = new HashMap<>(records.count());
+        for (ConsumerRecord<String, Quote> record : records){
+            result.put(record.offset(), record.value());
+        }
+        return result;
+    }
+
+    @Override
+    public void seek(long offset) {
+        consumer.seek(topicPartition, offset);
+    }
+
+    @Override
+    public void commit(long offset) {
+        consumer.commitSync(Collections.singletonMap(topicPartition, new OffsetAndMetadata(offset)));
     }
 
     @Override

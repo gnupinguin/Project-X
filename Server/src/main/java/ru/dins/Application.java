@@ -17,5 +17,6 @@ public class Application {
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
         new Thread(context.getBean(QuoteInnerSynchronizer.class)).start();
         new Thread(context.getBean(QuoteOuterSynchronizer.class)).start();
+
     }
 }

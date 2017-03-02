@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by gnupinguin on 22.02.17.
  */
-@Service @Data @NoArgsConstructor
+@Service @NoArgsConstructor
 public class QuoteInnerSynchronizer implements Runnable {
     @Autowired
     private QuoteProducer producer;
@@ -42,26 +42,24 @@ public class QuoteInnerSynchronizer implements Runnable {
     public void run() {
         try{
             while (!closed.get()){
-                boolean isSuccessConnection2DB = true;
                 List<Quote> quotes = mainPartitionConsumer.readQuotesFromQueue();
                 if (quotes != null){
                     for (Quote quote : quotes) {
-                        try{
+                        if (repository.availableConnection()){
                             repository.addQuote(quote);
-                        } catch (Exception e){
-                            isSuccessConnection2DB = false;
+                        }else{
                             producer.addQuote2ReservePartitionLocalTopic(quote);
                         }
                         producer.addQuote2ReplicaTopic(quote);
                     }
                 }
-                if (isSuccessConnection2DB){
+                if (repository.availableConnection()){
                     List<Quote> nonReceivedQuotes = reservePartitionConsumer.readQuotesFromQueue();
                     if (nonReceivedQuotes != null){
                         for (Quote quote : nonReceivedQuotes) {
-                            try{
+                            if (repository.availableConnection()){
                                 repository.addQuote(quote);
-                            } catch (Exception e){
+                            }else{
                                 producer.addQuote2ReservePartitionLocalTopic(quote);
                             }
                         }

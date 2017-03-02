@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by gnupinguin on 22.02.17.
  */
 
-@Service @Data @NoArgsConstructor
+@Service @NoArgsConstructor
 public class QuoteOuterSynchronizer implements Runnable{
 
     @Autowired @Qualifier("outerReplicaTopicConsumerFromFile")
@@ -37,22 +37,13 @@ public class QuoteOuterSynchronizer implements Runnable{
     public void run() {
         try {
             while (!closed.get()){
-                boolean isSuccesConnection2DB = true;
-                try{
-                    repository.findOne();
-                } catch (Exception e){
-                    System.err.println("Failed connection to MongoDB in outer sync.");
-                    isSuccesConnection2DB = false;
-                }
-                if (isSuccesConnection2DB){
+                if (repository.availableConnection()){
                     List<Quote> quotes = consumer.readQuotesFromQueue();
                     if (quotes != null){
                         for (Quote quote : quotes) {
-                            try{
+                            if (repository.availableConnection()){
                                 repository.addQuote(quote);
-                            } catch (Exception e) {
-                                isSuccesConnection2DB = false;
-//                                System.err.println(e);
+                            }else{
                                 producer.addQuote2ReservePartitionLocalTopic(quote);
                             }
                         }
