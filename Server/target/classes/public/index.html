@@ -1,28 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-      <link rel="stylesheet" href="css/bootstrap.min.css">
-      <script src="js/bootstrap.min.js"></script>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Quotations</title>
-   </head>
-   <style>
-      body{
-      background: url(images/startpage.jpg);
-      background-size: cover;
-      font-family: "Montserrat",sans-serif;
-      font-size: 16px;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      font-family: "Montserrat",sans-serif;
-      font-size: 32px;
-      }
-   </style>
-   <div style="position:absolute; top:45%; left:32%">
-	<font size=15>QUOTATION COLLECTION</font>
-		<div class="col-md-6 col-md-offset-3" >
-		        <p><a href="/create"><font color="black" size=5>Add a new quotation</font></a></p>
-			<p><a href="/data"><font color="black" size=5>My collection</font></a></p>
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>ProjectX</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <h1>ProjectX</h1>
+    <p>It's inovation project for storage<br />
+        your favorit quotes.</p>
+</header>
+
+<!-- Signup Form -->
+<form id="signup-form" method="post">
+    <input required="required" name="author" type="text" placeholder="Input the autor name. Example: Ray Bradbury">
+</form>
+<form id="signup-form" method="post">
+    <textarea required="required" name="text" placeholder="Input the quoter. Example:''Give a man a few lines of verse and he thinks he's the Lord of all Creation.''" ></textarea>
+</form>
+
+<form  action="/data">
+    <!-- <button type="submit" class="btn btn-default" name="form1" style="background-image: none;" >Rundomize</button> -->
+    <button type="submit" class="btn btn-default" name="form1" style="background-image: none;" >Show all</button>
+</form>
+<form  action="/status">
+    <button type="submit" class="btn btn-default" name="form1" style="background-image: none;" >Add</button>
+</form>
+<script src="static/js/main.js"></script>
+
+</body>
 </html>

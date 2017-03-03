@@ -1,6 +1,5 @@
 package ru.dins.kafka.consumer;
 
-import javafx.util.Pair;
 import ru.dins.web.model.quote.Quote;
 
 import java.io.Closeable;

@@ -1,7 +1,6 @@
 package ru.dins.kafka.consumer;
 
-import javafx.util.Pair;
-import lombok.Data;
+
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.kafka.clients.consumer.*;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import ru.dins.kafka.producer.QuoteProducerImpl;
 import ru.dins.web.model.quote.Quote;
 
 import java.io.IOException;
