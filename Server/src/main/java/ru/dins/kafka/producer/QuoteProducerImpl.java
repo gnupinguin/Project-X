@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.dins.web.model.quote.Quote;
 
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -33,10 +35,11 @@ public class QuoteProducerImpl implements QuoteProducer {
     @Value("${kafka.reserve-partition-local-topic}")
     private int reservePartitionOfLocalTopic;
 
-//    @Override
-//    public void addQuote2LocalTopic(Quote quote) {
-//        producer.send(new ProducerRecord<>(getLocalTopicName(), Long.toString(key.getAndIncrement()), quote));
-//    }
+    @Value("${kafka.local-host}")
+    private String host;
+
+    @Value("${kafka.local-port}")
+    private int port;
 
     @Override
     public void addQuote2ReplicaTopic(Quote quote) {
@@ -51,6 +54,16 @@ public class QuoteProducerImpl implements QuoteProducer {
     @Override
     public void addQuote2ReservePartitionLocalTopic(Quote quote) {
         producer.send(new ProducerRecord<>(getLocalTopicName(), reservePartitionOfLocalTopic, Long.toString(key.getAndIncrement()), quote));
+    }
+
+    @Override
+    public boolean availableConnection() {
+        try{
+            new Socket(InetAddress.getByName(host), port).close();
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 
     @Override
