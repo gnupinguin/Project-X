@@ -13,6 +13,8 @@ public interface QuoteProducer extends AutoCloseable{
     void addQuote2ReservePartitionLocalTopic(Quote quote);
     void addQuote2ReplicaTopic(Quote quote);
 
+    boolean availableConnection();
+
     @Override
     void close();
 

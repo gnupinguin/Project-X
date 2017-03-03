@@ -16,6 +16,8 @@ public interface QuoteConsumer extends Closeable {
     void seek(long offset);
     void commit(long offset);
 
+    boolean availableConnection();
+
     @Override
     void close();
 

@@ -39,7 +39,7 @@ public class QuoteRepository {
     }
 
 
-    public boolean availableConnection() throws UnknownFormatFlagsException {
+    public boolean availableConnection() {
        try{
            new Socket(InetAddress.getByName(host), port).close();
            return true;

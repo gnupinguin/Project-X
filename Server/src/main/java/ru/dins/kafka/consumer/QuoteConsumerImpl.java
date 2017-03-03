@@ -1,7 +1,5 @@
 package ru.dins.kafka.consumer;
 
-import javafx.util.Pair;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.kafka.clients.consumer.*;
@@ -10,10 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import ru.dins.kafka.producer.QuoteProducerImpl;
 import ru.dins.web.model.quote.Quote;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.*;
 
 /**
@@ -28,21 +27,28 @@ public class QuoteConsumerImpl implements QuoteConsumer {
 
     private TopicPartition topicPartition;
 
-    public QuoteConsumerImpl(String consumerPropertiesFilename, TopicPartition topicPartition) throws IOException{
+    private String host;
+    private int port;
+
+    public QuoteConsumerImpl(String consumerPropertiesFilename, TopicPartition topicPartition, String host, int port) throws IOException{
         Properties props = new Properties();
         props.load(new ClassPathResource(consumerPropertiesFilename).getInputStream());
         consumer = new KafkaConsumer<>(props);
         consumer.assign(Arrays.asList(topicPartition));
         this.topicPartition = topicPartition;
+        this.host = host;
+        this.port = port;
     }
 
     @Bean
     public QuoteConsumerImpl innerMainPartitionLocalTopicConsumerFromFile(
             @Value("${kafka.inner-local-topic-consumer-path}") String filename,
             @Value("${kafka.local-topic-name}") String topic,
-            @Value("${kafka.main-partition-local-topic}")Integer partition){
+            @Value("${kafka.main-partition-local-topic}")Integer partition,
+            @Value("${kafka.local-host}") String host,
+            @Value("${kafka.local-port}" )int port){
         try{
-            return new QuoteConsumerImpl(filename, new TopicPartition(topic, partition));
+            return new QuoteConsumerImpl(filename, new TopicPartition(topic, partition), host, port);
         } catch (IOException e){
             System.err.println("Error initialization inner local topic mainPartitionConsumer");
             System.err.println(e);
@@ -54,9 +60,11 @@ public class QuoteConsumerImpl implements QuoteConsumer {
     public QuoteConsumerImpl innerReservePartitionLocalTopicConsumerFromFile(
             @Value("${kafka.inner-local-topic-consumer-path}") String filename,
             @Value("${kafka.local-topic-name}") String topic,
-            @Value("${kafka.reserve-partition-local-topic}")Integer partition){
+            @Value("${kafka.reserve-partition-local-topic}")Integer partition,
+            @Value("${kafka.local-host}") String host,
+            @Value("${kafka.local-port}" )int port){
         try{
-            return new QuoteConsumerImpl(filename, new TopicPartition(topic, partition));
+            return new QuoteConsumerImpl(filename, new TopicPartition(topic, partition), host, port);
         } catch (IOException e){
             System.err.println("Error initialization inner local topic mainPartitionConsumer");
             System.err.println(e);
@@ -67,9 +75,11 @@ public class QuoteConsumerImpl implements QuoteConsumer {
     @Bean
     public QuoteConsumerImpl outerReplicaTopicConsumerFromFile(
             @Value("${kafka.outer-replica-topic-consumer-path}")String filename,
-            @Value("${kafka.replica-topic-name}")String topic){
+            @Value("${kafka.replica-topic-name}")String topic,
+            @Value("${kafka.remote-host}") String host,
+            @Value("${kafka.remote-port}" )int port){
         try{
-            return new QuoteConsumerImpl(filename, new TopicPartition(topic, DEFAULT_PARTITION));
+            return new QuoteConsumerImpl(filename, new TopicPartition(topic, DEFAULT_PARTITION), host, port);
         } catch (IOException e){
             System.err.println("Error initialization outer replica topic mainPartitionConsumer");
             System.err.println(e);
@@ -105,6 +115,16 @@ public class QuoteConsumerImpl implements QuoteConsumer {
     @Override
     public void commit(long offset) {
         consumer.commitSync(Collections.singletonMap(topicPartition, new OffsetAndMetadata(offset)));
+    }
+
+    @Override
+    public boolean availableConnection() {
+        try{
+            new Socket(InetAddress.getByName(host), port).close();
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 
     @Override
