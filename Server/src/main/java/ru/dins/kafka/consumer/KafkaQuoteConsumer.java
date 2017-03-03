@@ -19,7 +19,7 @@ import java.util.*;
  * Created by gnupinguin on 20.02.17.
  */
 @Service  @NoArgsConstructor
-public class QuoteConsumerImpl implements QuoteConsumer {
+public class KafkaQuoteConsumer implements QuoteConsumer {
     @NonNull
     private Consumer<String, Quote> consumer;
 
@@ -30,7 +30,7 @@ public class QuoteConsumerImpl implements QuoteConsumer {
     private String host;
     private int port;
 
-    public QuoteConsumerImpl(String consumerPropertiesFilename, TopicPartition topicPartition, String host, int port) throws IOException{
+    public KafkaQuoteConsumer(String consumerPropertiesFilename, TopicPartition topicPartition, String host, int port) throws IOException{
         Properties props = new Properties();
         props.load(new ClassPathResource(consumerPropertiesFilename).getInputStream());
         consumer = new KafkaConsumer<>(props);
@@ -41,14 +41,14 @@ public class QuoteConsumerImpl implements QuoteConsumer {
     }
 
     @Bean
-    public QuoteConsumerImpl innerMainPartitionLocalTopicConsumerFromFile(
+    public KafkaQuoteConsumer innerMainPartitionLocalTopicConsumerFromFile(
             @Value("${kafka.inner-local-topic-consumer-path}") String filename,
             @Value("${kafka.local-topic-name}") String topic,
             @Value("${kafka.main-partition-local-topic}")Integer partition,
             @Value("${kafka.local-host}") String host,
             @Value("${kafka.local-port}" )int port){
         try{
-            return new QuoteConsumerImpl(filename, new TopicPartition(topic, partition), host, port);
+            return new KafkaQuoteConsumer(filename, new TopicPartition(topic, partition), host, port);
         } catch (IOException e){
             System.err.println("Error initialization inner local topic mainPartitionConsumer");
             System.err.println(e);
@@ -57,14 +57,14 @@ public class QuoteConsumerImpl implements QuoteConsumer {
     }
 
     @Bean
-    public QuoteConsumerImpl innerReservePartitionLocalTopicConsumerFromFile(
+    public KafkaQuoteConsumer innerReservePartitionLocalTopicConsumerFromFile(
             @Value("${kafka.inner-local-topic-consumer-path}") String filename,
             @Value("${kafka.local-topic-name}") String topic,
             @Value("${kafka.reserve-partition-local-topic}")Integer partition,
             @Value("${kafka.local-host}") String host,
             @Value("${kafka.local-port}" )int port){
         try{
-            return new QuoteConsumerImpl(filename, new TopicPartition(topic, partition), host, port);
+            return new KafkaQuoteConsumer(filename, new TopicPartition(topic, partition), host, port);
         } catch (IOException e){
             System.err.println("Error initialization inner local topic mainPartitionConsumer");
             System.err.println(e);
@@ -73,13 +73,13 @@ public class QuoteConsumerImpl implements QuoteConsumer {
     }
 
     @Bean
-    public QuoteConsumerImpl outerReplicaTopicConsumerFromFile(
+    public KafkaQuoteConsumer outerReplicaTopicConsumerFromFile(
             @Value("${kafka.outer-replica-topic-consumer-path}")String filename,
             @Value("${kafka.replica-topic-name}")String topic,
             @Value("${kafka.remote-host}") String host,
             @Value("${kafka.remote-port}" )int port){
         try{
-            return new QuoteConsumerImpl(filename, new TopicPartition(topic, DEFAULT_PARTITION), host, port);
+            return new KafkaQuoteConsumer(filename, new TopicPartition(topic, DEFAULT_PARTITION), host, port);
         } catch (IOException e){
             System.err.println("Error initialization outer replica topic mainPartitionConsumer");
             System.err.println(e);

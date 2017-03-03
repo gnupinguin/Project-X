@@ -48,8 +48,6 @@ public class ServerController {
     public String addQuote(@RequestParam(value = "quote") String quoteText,
                            @RequestParam(value = "author") String author,
                            Model model){
-
-
         try{
 
             quoteText = quoteText.trim();
