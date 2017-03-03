@@ -1,0 +1,15 @@
+ru/dins/kafka/synchronization/QuoteLocalSynchronizer.class
+ru/dins/model/quote/QuoteMapper.class
+ru/dins/controller/ProjectXController.class
+ru/dins/kafka/synchronization/Synchronizer.class
+ru/dins/Application.class
+ru/dins/model/quote/QuoteSerializer.class
+ru/dins/persistence/ProjectXRepository.class
+ru/dins/model/quote/QuoteDeserializer.class
+ru/dins/model/quote/Quote.class
+ru/dins/kafka/producer/ProjectXProducer.class
+ru/dins/kafka/synchronization/QuoteOuterSynchronizer.class
+ru/dins/kafka/producer/QuoteProducer.class
+ru/dins/kafka/consumer/ProjectXConsumer.class
+ru/dins/service/ProjectXService.class
+ru/dins/kafka/consumer/QuoteConsumer.class
