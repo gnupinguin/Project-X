@@ -33,7 +33,7 @@ public class ServerController {
     @Autowired
     private QuoteProducer producer;
 
-    @Value("${remote-host}")
+    @Value("${server.remote-host}")
     private String remoteHost;
 
     @RequestMapping("/")
