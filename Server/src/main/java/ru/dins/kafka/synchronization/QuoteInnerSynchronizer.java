@@ -17,10 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by gnupinguin on 22.02.17.
  */
 @Service @NoArgsConstructor
-public class QuoteInnerSynchronizer implements Runnable {
-    @Autowired
-    private QuoteProducer producer;
-
+public class QuoteInnerSynchronizer extends AbstractQuoteSynchronizer implements Runnable {
     @Autowired @Qualifier("innerMainPartitionLocalTopicConsumerFromFile")
     private QuoteConsumer mainPartitionConsumer;
 
@@ -29,8 +26,6 @@ public class QuoteInnerSynchronizer implements Runnable {
 
     private AtomicBoolean closed = new AtomicBoolean(false);
 
-    @Autowired
-    private QuoteRepository repository;
 
     /*
     * It is bad realisation for safe-data.
@@ -41,7 +36,7 @@ public class QuoteInnerSynchronizer implements Runnable {
     @Override
     public void run() {
         try{
-            while (!closed.get()){
+            while (!closed.get()) {
                 List<Quote> quotes = mainPartitionConsumer.readQuotesFromQueue();
                 if (quotes != null){
                     for (Quote quote : quotes) {
@@ -53,18 +48,7 @@ public class QuoteInnerSynchronizer implements Runnable {
                         producer.addQuote2ReplicaTopic(quote);
                     }
                 }
-                if (repository.availableConnection()){
-                    List<Quote> nonReceivedQuotes = reservePartitionConsumer.readQuotesFromQueue();
-                    if (nonReceivedQuotes != null){
-                        for (Quote quote : nonReceivedQuotes) {
-                            if (repository.availableConnection()){
-                                repository.addQuote(quote);
-                            }else{
-                                producer.addQuote2ReservePartitionLocalTopic(quote);
-                            }
-                        }
-                    }
-                }
+                resendQuotes(reservePartitionConsumer);
             }
         } catch (WakeupException e){
             if (!closed.get()){

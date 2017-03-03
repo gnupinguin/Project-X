@@ -24,8 +24,6 @@ public class ServerController {
     private static final String ERROR_ADDING_QUOTE_MESSAGE = "When creating quotes error occurred!";
     private static final String SUCCESS_ADDING_QUOTE_MESSAGE = "Quote has been created successfully!";
 
-    private static final Pattern NO_EMPTY_STRING_PATTERN = Pattern.compile("^\\s*$");
-
     @Autowired
     private QuoteRepository repository;
 
@@ -42,7 +40,7 @@ public class ServerController {
         return "create-quote.html";
     }
 
-    @RequestMapping(value="/add", method= RequestMethod.POST)
+    @RequestMapping(value="/add")
     public String addQuote(@RequestParam(value = "quote") String quoteText,
                            @RequestParam(value = "author") String author,
                            Model model){
@@ -51,7 +49,7 @@ public class ServerController {
             quoteText = quoteText.trim();
             author = author.trim();
 
-            if (NO_EMPTY_STRING_PATTERN.matcher(quoteText).find() || NO_EMPTY_STRING_PATTERN.matcher(author).find())
+            if (quoteText.equals("") || author.equals(""))
                 throw new RuntimeException();
             producer.addQuote2MainPartitionLocalTopic(new Quote(author, quoteText));
             model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);

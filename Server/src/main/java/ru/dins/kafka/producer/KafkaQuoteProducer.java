@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 
 @Service @Data @NoArgsConstructor
-public class QuoteProducerImpl implements QuoteProducer {
+public class KafkaQuoteProducer implements QuoteProducer {
     private AtomicLong key = new AtomicLong(0);
     @Autowired
     private Producer<String, Quote> producer;
@@ -40,6 +40,12 @@ public class QuoteProducerImpl implements QuoteProducer {
 
     @Value("${kafka.local-port}")
     private int port;
+
+    private KafkaConfiguration configuration;
+
+    public KafkaQuoteProducer(KafkaConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
     @Override
     public void addQuote2ReplicaTopic(Quote quote) {

@@ -20,35 +20,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 @Service @NoArgsConstructor
-public class QuoteOuterSynchronizer implements Runnable{
+public class QuoteOuterSynchronizer extends AbstractQuoteSynchronizer implements Runnable{
 
     @Autowired @Qualifier("outerReplicaTopicConsumerFromFile")
     private QuoteConsumer consumer;
 
-    @Autowired
-    private QuoteProducer producer;
 
     private AtomicBoolean closed = new AtomicBoolean(false);
-
-    @Autowired
-    QuoteRepository repository;
 
     @Override
     public void run() {
         try {
-            while (!closed.get()){
-                if (repository.availableConnection()){
-                    List<Quote> quotes = consumer.readQuotesFromQueue();
-                    if (quotes != null){
-                        for (Quote quote : quotes) {
-                            if (repository.availableConnection()){
-                                repository.addQuote(quote);
-                            }else{
-                                producer.addQuote2ReservePartitionLocalTopic(quote);
-                            }
-                        }
-                    }
-                }
+            while (!closed.get()) {
+                resendQuotes(consumer);
             }
         } catch (WakeupException e) {
             if (!closed.get()) throw e;
