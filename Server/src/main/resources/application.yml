@@ -8,7 +8,7 @@ spring:
   mandatory-file-encoding: UTF-8
 server:
   port: 8080
-
+  remote-host: http://192.168.62.72:8080
 kafka:
   local-topic-name: quote-local
   replica-topic-name: quote-replica
