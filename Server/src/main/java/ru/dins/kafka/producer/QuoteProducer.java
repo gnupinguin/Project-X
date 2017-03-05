@@ -3,19 +3,18 @@ package ru.dins.kafka.producer;
 import ru.dins.web.model.quote.Quote;
 
 import java.io.Closeable;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by gnupinguin on 20.02.17.
  */
-public interface QuoteProducer extends AutoCloseable{
+public interface QuoteProducer{
 
-    void addQuote2MainPartitionLocalTopic(Quote quote);
-    void addQuote2ReservePartitionLocalTopic(Quote quote);
-    void addQuote2ReplicaTopic(Quote quote);
+    void addQuote2LocalTopic(Quote quote) throws UnsentQuoteException;
+    void addQuote2ReserveTopic(Quote quote) throws UnsentQuoteException;
+    void addQuote2ReplicaTopic(Quote quote) throws UnsentQuoteException;
 
     boolean availableConnection();
 
-    @Override
-    void close();
 
 }

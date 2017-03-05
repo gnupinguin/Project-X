@@ -56,7 +56,7 @@ public class ServerController {
             if (quoteText.equals("") || author.equals(""))
                 throw new RuntimeException();
             if (producer.availableConnection())  {
-                producer.addQuote2MainPartitionLocalTopic(new Quote(author, quoteText));
+                producer.addQuote2LocalTopic(new Quote(author, quoteText));
                 model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);
             }else{
                 return String.format("redirect:%s/add?quote=%s&author=%s",remoteHost,quoteText,author);

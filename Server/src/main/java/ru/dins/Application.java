@@ -2,10 +2,9 @@ package ru.dins;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import ru.dins.kafka.synchronization.QuoteInnerSynchronizer;
-import ru.dins.kafka.synchronization.QuoteOuterSynchronizer;
-import ru.dins.web.persistence.QuoteRepository;
+import org.springframework.context.ApplicationContext;
+import ru.dins.kafka.producer.KafkaQuoteProducer;
+import ru.dins.web.model.quote.Quote;
 
 
 /**
@@ -14,9 +13,9 @@ import ru.dins.web.persistence.QuoteRepository;
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) throws Exception {
-        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
-        new Thread(context.getBean(QuoteInnerSynchronizer.class)).start();
-        new Thread(context.getBean(QuoteOuterSynchronizer.class)).start();
-
+        ApplicationContext context = SpringApplication.run(Application.class, args);
+        KafkaQuoteProducer p = context.getBean(KafkaQuoteProducer.class);
+//        p.addQuote2LocalTopic(new Quote("Кино", "А тем кто ложиться спать - спокойного сна."));
+//        p.addQuote2LocalTopic(new Quote("Purgen", "Кристально чистая ночь, проведённая только с тобой"));
     }
 }
