@@ -9,6 +9,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import ru.dins.web.model.quote.Quote;
 import ru.dins.web.persistence.QuoteRepository;
 
+import java.net.ConnectException;
 import java.util.Map;
 
 /**
@@ -22,18 +23,17 @@ public class OuterReplicaListener implements AcknowledgingMessageListener<String
     @Override
     public void onMessage(ConsumerRecord<String, Quote> data, Acknowledgment acknowledgment) {
         Quote quote = data.value();
-        if (repository.availableConnection()){
+
+        try{
             repository.addQuote(quote);
             acknowledgment.acknowledge();
-        }else{
+        } catch (ConnectException e){
             try {
                 consumerSeekCallback.seek(data.topic(), data.partition(), data.offset());
-            } catch (Exception e){
+            } catch (Exception ex){
                 System.err.println(quote + " was lost in OuterReplicaListener");
             }
-
         }
-
     }
 
     @Override

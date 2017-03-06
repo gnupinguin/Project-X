@@ -13,6 +13,8 @@ import ru.dins.kafka.producer.QuoteProducer;
 import ru.dins.web.persistence.QuoteRepository;
 import ru.dins.web.model.quote.Quote;
 
+import java.net.ConnectException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 
@@ -73,11 +75,15 @@ public class ServerController {
 
     @RequestMapping(value = "/data")
     public String showQuotes(Model model){
-        if (repository.availableConnection()){
-            model.addAttribute("quotes", repository.findAll());
+        List<Quote> quotes = null;
+        try{
+            quotes = repository.findAll();
+            model.addAttribute("quotes",  quotes);
             return "data";
+        } catch (ConnectException e){
+                e.printStackTrace();
+            return "redirect:" + remoteHost + "/data";
         }
-        else return "redirect:" + remoteHost + "/data";
 
     }
 

@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 import ru.dins.web.model.quote.Quote;
 
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
@@ -32,14 +33,22 @@ public class QuoteRepository {
     private int port;
 
     @Autowired
-//    @Qualifier("anotherMongoTemplate")
+    @Qualifier("anotherMongoTemplate")
     private MongoTemplate mongoTemplate;
 
-    public List<Quote> findAll() {
-        return mongoTemplate.findAll(Quote.class, quotesCollection);
+    public List<Quote> findAll() throws ConnectException {
+        try {
+            return mongoTemplate.findAll(Quote.class, quotesCollection);
+        } catch (Exception e){
+            throw new ConnectException("Error connect to DB when finding  quotes");
+        }
     }
-    public void addQuote(Quote quote) {
-        mongoTemplate.insert(quote, quotesCollection);
+    public void addQuote(Quote quote) throws ConnectException {
+        try{
+            mongoTemplate.insert(quote, quotesCollection);
+        } catch (Exception e){
+            throw new ConnectException("Error connect to DB when adding " + quote);
+        }
     }
 
 

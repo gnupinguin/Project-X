@@ -9,6 +9,8 @@ import ru.dins.kafka.producer.UnsentQuoteException;
 import ru.dins.web.model.quote.Quote;
 import ru.dins.web.persistence.QuoteRepository;
 
+import java.net.ConnectException;
+
 /**
  * Created by gnupinguin on 04.03.17.
  */
@@ -23,35 +25,36 @@ public class InnerListeners  {
 
     @KafkaListener(id = "localListener", topics = "${kafka.local-topic-name}", group = "inner",containerFactory = "kafkaListenerContainerFactory")
     public void listenLocalTopic(Quote quote) {
-        if (repository.availableConnection()){
-            repository.addQuote(quote);
             try{
-                producer.addQuote2ReplicaTopic(quote);
-            } catch (UnsentQuoteException e){
-                try{
+                repository.addQuote(quote);
+                try {
+                    producer.addQuote2ReplicaTopic(quote);
+                } catch (UnsentQuoteException e){
+                    System.err.println("Error with adding quote to replica topic.");
+                }
+            }catch (ConnectException e){
+                try {
                     producer.addQuote2ReserveTopic(quote);
                 } catch (UnsentQuoteException ex){
-                    System.err.println(quote + "lost!!!!");
+                    System.err.println(quote + " was lost in listenerLocalTopic");
                 }
             }
-        }else{
-            System.err.println("Error adding quote");
-        }
     }
 
     @KafkaListener(id = "reserveListener", topics = "${kafka.reserve-topic-name}", group = "inner", containerFactory = "kafkaListenerContainerFactory")
     public void listenReserveTopic(ConsumerRecord<String, Quote> record) {
         Quote quote = record.value();
-        if (repository.availableConnection()){
+        try{
             repository.addQuote(quote);
-        }else{
-            System.err.println("Error adding quote");
+        } catch (ConnectException e){
+            System.err.println("Error adding quote " + quote + " to DB in listenReserveTopic");
             try{
                 producer.addQuote2ReserveTopic(quote);
-            } catch (UnsentQuoteException e){
-                System.err.println(quote + "lost!!!!");
+            } catch (UnsentQuoteException ex){
+                System.err.println(quote + " was lost in listenReserveTopic");
             }
         }
+
     }
 
 }
