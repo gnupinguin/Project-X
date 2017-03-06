@@ -53,7 +53,7 @@ public class KafkaQuoteProducer implements QuoteProducer {
     @Override
     public boolean availableConnection() {
         try{
-            new Socket(InetAddress.getByName("localhost"), 9092).close();
+            new Socket(InetAddress.getByName("192.168.88.178"), 9092).close();
             return true;
         } catch (Exception e){
             return false;

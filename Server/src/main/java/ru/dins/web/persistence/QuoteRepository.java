@@ -2,7 +2,9 @@ package ru.dins.web.persistence;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 import ru.dins.web.model.quote.Quote;
@@ -17,6 +19,7 @@ import java.util.UnknownFormatFlagsException;
  * Created by gnupinguin on 19.02.17.
  */
 @Repository @NoArgsConstructor
+@ImportResource({"classpath*:ApplicationContext.xml"})
 public class QuoteRepository {
 
     @Value("${spring.data.mongodb.collection}")
@@ -29,6 +32,7 @@ public class QuoteRepository {
     private int port;
 
     @Autowired
+//    @Qualifier("anotherMongoTemplate")
     private MongoTemplate mongoTemplate;
 
     public List<Quote> findAll() {

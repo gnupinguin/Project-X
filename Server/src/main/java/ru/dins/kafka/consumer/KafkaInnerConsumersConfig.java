@@ -23,10 +23,10 @@ import java.util.Map;
 @Configuration @EnableKafka
 public class KafkaInnerConsumersConfig {
     @Bean
-    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Quote>> kafkaListenerContainerFactory() {
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Quote>> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Quote> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
-        factory.setConcurrency(2);
+        factory.setConcurrency(3);
         factory.getContainerProperties().setPollTimeout(3000);
         return factory;
     }
@@ -45,11 +45,10 @@ public class KafkaInnerConsumersConfig {
         propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
         propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, QuoteDeserializer.class);
+        propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, "inner");
         propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return propsMap;
     }
-
-
 
     @Bean
     public InnerListeners innerListeners() {

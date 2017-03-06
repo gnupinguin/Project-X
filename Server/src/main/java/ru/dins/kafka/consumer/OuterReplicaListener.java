@@ -12,7 +12,7 @@ import ru.dins.web.persistence.QuoteRepository;
 import java.util.Map;
 
 /**
- * Created by gnupinguin on 05.03.17.
+ * Created by gnupinguin on 06.03.17.
  */
 public class OuterReplicaListener implements AcknowledgingMessageListener<String, Quote>, ConsumerSeekAware {
     private ConsumerSeekCallback consumerSeekCallback;
@@ -47,7 +47,7 @@ public class OuterReplicaListener implements AcknowledgingMessageListener<String
     }
 
     @Override
-    public void onIdleContainer(Map<TopicPartition, Long> assignments, ConsumerSeekCallback callback) {
+    public void onIdleContainer(Map<TopicPartition, Long> assignments, ConsumerSeekAware.ConsumerSeekCallback callback) {
         //nothing to do
     }
 }
