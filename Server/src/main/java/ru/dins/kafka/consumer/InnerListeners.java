@@ -1,6 +1,8 @@
 package ru.dins.kafka.consumer;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.net.ConnectException;
  */
 @Service
 public class InnerListeners  {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private KafkaQuoteProducer producer;
@@ -28,15 +31,16 @@ public class InnerListeners  {
         try {
             producer.addQuote2ReplicaTopic(quote);
         } catch (UnsentQuoteException e) {
-            System.err.println("Error with adding quote to replica topic.");
+            logger.error("Error with adding quote to replica topic.");
         }
         try {
             repository.addQuote(quote);
         } catch (ConnectException e) {
+            logger.warn("Connection to repository failed");
             try {
                 producer.addQuote2ReserveTopic(quote);
             } catch (UnsentQuoteException ex) {
-                System.err.println(quote + " was lost in listenerLocalTopic");
+                logger.error(quote + " was lost in listenerLocalTopic");
             }
         }
     }
@@ -48,11 +52,11 @@ public class InnerListeners  {
         try{
             repository.addQuote(quote);
         } catch (ConnectException e){
-            System.err.println("Error adding quote " + quote + " to DB in listenReserveTopic");
+            logger.warn("Connection to repository failed");
             try{
                 producer.addQuote2ReserveTopic(quote);
             } catch (UnsentQuoteException ex){
-                System.err.println(quote + " was lost in listenReserveTopic");
+                logger.error(quote + " was lost in listenReserveTopic");
             }
         }
 

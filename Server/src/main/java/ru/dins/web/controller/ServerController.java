@@ -1,5 +1,7 @@
 package ru.dins.web.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +18,6 @@ import ru.dins.web.model.quote.Quote;
 
 import java.net.ConnectException;
 import java.util.List;
-import java.util.regex.Pattern;
 
 
 /**
@@ -27,6 +28,8 @@ import java.util.regex.Pattern;
 public class ServerController {
     private static final String ERROR_ADDING_QUOTE_MESSAGE = "When creating quotes error occurred!";
     private static final String SUCCESS_ADDING_QUOTE_MESSAGE = "Quote has been created successfully!";
+
+    private  final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private QuoteRepository repository;
@@ -52,27 +55,17 @@ public class ServerController {
                            @RequestParam(value = "author") String author,
                            Model model){
         try{
-
             quoteText = quoteText.trim();
             author = author.trim();
-
             if (quoteText.equals("") || author.equals("")){
                 model.addAttribute("message", ERROR_ADDING_QUOTE_MESSAGE);
                 return "status";
             }
-
             producer.addQuote2LocalTopic(new Quote(author, quoteText));
             model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);
-
         } catch (UnsentQuoteException e){
-            System.err.println(e);
-            //model.addAttribute("message", ERROR_ADDING_QUOTE_MESSAGE);
+            logger.error(e.getMessage());
             return String.format("redirect:%s/add?quote=%s&author=%s",remoteHost,quoteText,author);
-        }
-
-
-        if (!repository.availableConnection()) {
-            return String.format("redirect:%s/add?quote=%s&author=%s", remoteHost, quoteText, author);
         }
         return "status";
     }
@@ -85,7 +78,7 @@ public class ServerController {
             model.addAttribute("quotes",  quotes);
             return "data";
         } catch (ConnectException e){
-                e.printStackTrace();
+            logger.error("Local repository connection error, trying to connect remote host");
             return "redirect:" + remoteHost + "/data";
         }
 

@@ -2,6 +2,8 @@ package ru.dins.kafka.consumer;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.listener.AcknowledgingMessageListener;
 import org.springframework.kafka.listener.ConsumerSeekAware;
@@ -17,6 +19,7 @@ import java.util.Map;
  */
 public class OuterReplicaListener implements AcknowledgingMessageListener<String, Quote>, ConsumerSeekAware {
     private ConsumerSeekCallback consumerSeekCallback;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private QuoteRepository repository;
 
@@ -27,10 +30,11 @@ public class OuterReplicaListener implements AcknowledgingMessageListener<String
             repository.addQuote(quote);
             acknowledgment.acknowledge();
         } catch (ConnectException e){
+            logger.warn("Connection to repository failed");
             try {
                 consumerSeekCallback.seek(data.topic(), data.partition(), data.offset());
             } catch (Exception ex){
-                System.err.println(quote + " was lost in OuterReplicaListener");
+                logger.error(quote + " was lost in OuterReplicaListener");
             }
         }
     }
