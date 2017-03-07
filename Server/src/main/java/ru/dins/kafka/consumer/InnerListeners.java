@@ -1,6 +1,7 @@
 package ru.dins.kafka.consumer;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ import java.util.SplittableRandom;
 /**
  * Created by gnupinguin on 04.03.17.
  */
-@Service @Data
+@Service @Data @NoArgsConstructor
 public class InnerListeners  {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

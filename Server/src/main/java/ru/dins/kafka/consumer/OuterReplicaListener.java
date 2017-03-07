@@ -1,6 +1,7 @@
 package ru.dins.kafka.consumer;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
@@ -19,7 +20,7 @@ import java.util.Map;
 /**
  * Created by gnupinguin on 06.03.17.
  */
-@Data
+@Data @NoArgsConstructor
 public class OuterReplicaListener implements AcknowledgingMessageListener<String, Quote>, ConsumerSeekAware {
     private ConsumerSeekCallback consumerSeekCallback;
     private final Logger logger = LoggerFactory.getLogger(getClass());
