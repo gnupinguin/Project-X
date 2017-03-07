@@ -1,15 +1,10 @@
 package ru.dins.kafka.producer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.dins.web.model.quote.Quote;
-
-import java.net.InetAddress;
-import java.net.Socket;
 
 /**
  * Created by gnupinguin on 04.03.17.
@@ -50,15 +45,5 @@ public class KafkaQuoteProducer implements QuoteProducer {
     @Override
     public void addQuote2ReplicaTopic(Quote quote) throws UnsentQuoteException {
         addQuote2Topic(quote, replicaTopicName);
-    }
-
-    @Override
-    public boolean availableConnection() {
-        try{
-            new Socket(InetAddress.getByName("192.168.62.221"), 9092).close();
-            return true;
-        } catch (Exception e){
-            return false;
-        }
     }
 }

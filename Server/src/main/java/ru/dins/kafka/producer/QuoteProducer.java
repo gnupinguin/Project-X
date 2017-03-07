@@ -13,8 +13,4 @@ public interface QuoteProducer{
     void addQuote2LocalTopic(Quote quote) throws UnsentQuoteException;
     void addQuote2ReserveTopic(Quote quote) throws UnsentQuoteException;
     void addQuote2ReplicaTopic(Quote quote) throws UnsentQuoteException;
-
-    boolean availableConnection();
-
-
 }

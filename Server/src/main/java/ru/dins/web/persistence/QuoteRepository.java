@@ -26,12 +26,6 @@ public class QuoteRepository {
     @Value("${spring.data.mongodb.collection}")
     private String quotesCollection;
 
-    @Value("${spring.data.mongodb.host}")
-    private String host;
-
-    @Value("${spring.data.mongodb.port}")
-    private int port;
-
     @Autowired
     @Qualifier("anotherMongoTemplate")
     private MongoTemplate mongoTemplate;
@@ -49,16 +43,5 @@ public class QuoteRepository {
         } catch (Exception e){
             throw new ConnectException("Error connect to DB when adding " + quote);
         }
-    }
-
-
-    public boolean availableConnection() {
-       try{
-           new Socket(InetAddress.getByName(host), port).close();
-           return true;
-       } catch (Exception e){
-           return false;
-       }
-
     }
 }

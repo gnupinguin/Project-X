@@ -14,10 +14,6 @@ kafka:
   replica-topic-name: quote-replica
   reserve-topic-name: quote-reserve
 
-  local-host: 192.168.62.221
-  local-port: 9092
-  remote-host: 192.168.62.72
-  remote-port: 9092
 
 
 
