@@ -3,14 +3,12 @@ package ru.dins.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.dins.kafka.consumer.LoggersMessageStore;
 import ru.dins.kafka.producer.QuoteProducer;
 import ru.dins.kafka.producer.UnsentQuoteException;
 import ru.dins.web.persistence.QuoteRepository;
@@ -26,8 +24,6 @@ import java.util.List;
 
 @Controller
 public class ServerController {
-    private static final String ERROR_ADDING_QUOTE_MESSAGE = "When creating quotes error occurred!";
-    private static final String SUCCESS_ADDING_QUOTE_MESSAGE = "Quote has been created successfully!";
 
     private  final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -58,11 +54,11 @@ public class ServerController {
             quoteText = quoteText.trim();
             author = author.trim();
             if (quoteText.equals("") || author.equals("")){
-                model.addAttribute("message", ERROR_ADDING_QUOTE_MESSAGE);
+                model.addAttribute("message", LoggersMessageStore.ERROR_ADDING_QUOTE_MESSAGE);
                 return "status";
             }
             producer.addQuote2LocalTopic(new Quote(author, quoteText));
-            model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);
+            model.addAttribute("message", LoggersMessageStore.SUCCESS_ADDING_QUOTE_MESSAGE);
         } catch (UnsentQuoteException e){
             logger.error(e.getMessage());
             return String.format("redirect:%s/add?quote=%s&author=%s",remoteHost,quoteText,author);
@@ -78,7 +74,7 @@ public class ServerController {
             model.addAttribute("quotes",  quotes);
             return "data";
         } catch (ConnectException e){
-            logger.error("Local repository connection error, trying to connect remote host");
+            logger.warn(LoggersMessageStore.WARNING_REPOSITORY_CONNECTION_FAILED);
             return "redirect:" + remoteHost + "/data";
         }
 

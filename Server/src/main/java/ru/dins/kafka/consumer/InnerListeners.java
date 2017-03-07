@@ -1,5 +1,7 @@
 package ru.dins.kafka.consumer;
 
+import lombok.Data;
+import lombok.NonNull;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,18 +14,19 @@ import ru.dins.web.model.quote.Quote;
 import ru.dins.web.persistence.QuoteRepository;
 
 import java.net.ConnectException;
+import java.util.SplittableRandom;
 
 /**
  * Created by gnupinguin on 04.03.17.
  */
-@Service
+@Service @Data
 public class InnerListeners  {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
+    @Autowired @NonNull
     private KafkaQuoteProducer producer;
 
-    @Autowired
+    @Autowired @NonNull
     private QuoteRepository repository;
 
     @KafkaListener(id = "localListener", topics = "${kafka.local-topic-name}", group = "inner",containerFactory = "kafkaListenerContainerFactory")
@@ -31,16 +34,16 @@ public class InnerListeners  {
         try {
             producer.addQuote2ReplicaTopic(quote);
         } catch (UnsentQuoteException e) {
-            logger.error("Error with adding quote to replica topic.");
+            logger.error(LoggersMessageStore.ADDING_QUOTE_TO_REPLICA_ERROR);
         }
         try {
             repository.addQuote(quote);
         } catch (ConnectException e) {
-            logger.warn("Connection to repository failed");
+            logger.warn(LoggersMessageStore.CONNECTION_REPOSITORY_WARNING);
             try {
                 producer.addQuote2ReserveTopic(quote);
             } catch (UnsentQuoteException ex) {
-                logger.error(quote + " was lost in listenerLocalTopic");
+                logger.error(String.format(LoggersMessageStore.LOST_QUOTE_ERROR_PATTERN, quote, "listenLocalTopic"));
             }
         }
     }
@@ -56,7 +59,7 @@ public class InnerListeners  {
             try{
                 producer.addQuote2ReserveTopic(quote);
             } catch (UnsentQuoteException ex){
-                logger.error(quote + " was lost in listenReserveTopic");
+                logger.error(String.format(LoggersMessageStore.LOST_QUOTE_ERROR_PATTERN, quote, "listenReserveTopic"));
             }
         }
 

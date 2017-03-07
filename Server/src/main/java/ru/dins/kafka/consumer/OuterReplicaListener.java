@@ -1,5 +1,7 @@
 package ru.dins.kafka.consumer;
 
+import lombok.Data;
+import lombok.NonNull;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.slf4j.Logger;
@@ -17,10 +19,11 @@ import java.util.Map;
 /**
  * Created by gnupinguin on 06.03.17.
  */
+@Data
 public class OuterReplicaListener implements AcknowledgingMessageListener<String, Quote>, ConsumerSeekAware {
     private ConsumerSeekCallback consumerSeekCallback;
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    @Autowired
+    @Autowired @NonNull
     private QuoteRepository repository;
 
     @Override
@@ -30,11 +33,11 @@ public class OuterReplicaListener implements AcknowledgingMessageListener<String
             repository.addQuote(quote);
             acknowledgment.acknowledge();
         } catch (ConnectException e){
-            logger.warn("Connection to repository failed");
+            logger.warn(LoggersMessageStore.CONNECTION_REPOSITORY_WARNING);
             try {
                 consumerSeekCallback.seek(data.topic(), data.partition(), data.offset());
             } catch (Exception ex){
-                logger.error(quote + " was lost in OuterReplicaListener");
+                logger.error(String.format(LoggersMessageStore.LOST_QUOTE_ERROR_PATTERN, quote, "onMessage"));
             }
         }
     }
