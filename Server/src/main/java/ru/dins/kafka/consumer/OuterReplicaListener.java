@@ -23,7 +23,6 @@ public class OuterReplicaListener implements AcknowledgingMessageListener<String
     @Override
     public void onMessage(ConsumerRecord<String, Quote> data, Acknowledgment acknowledgment) {
         Quote quote = data.value();
-
         try{
             repository.addQuote(quote);
             acknowledgment.acknowledge();

@@ -39,7 +39,7 @@ public class KafkaInnerConsumersConfig {
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> propsMap = new HashMap<>();
-        propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.88.178:9092");
+        propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.62.221:9092");
         propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
         propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
         propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");

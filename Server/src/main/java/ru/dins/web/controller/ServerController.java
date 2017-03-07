@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.dins.kafka.producer.QuoteProducer;
+import ru.dins.kafka.producer.UnsentQuoteException;
 import ru.dins.web.persistence.QuoteRepository;
 import ru.dins.web.model.quote.Quote;
 
@@ -55,18 +56,21 @@ public class ServerController {
             quoteText = quoteText.trim();
             author = author.trim();
 
-            if (quoteText.equals("") || author.equals(""))
-                throw new RuntimeException();
-            if (producer.availableConnection())  {
-                producer.addQuote2LocalTopic(new Quote(author, quoteText));
-                model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);
-            }else{
-                return String.format("redirect:%s/add?quote=%s&author=%s",remoteHost,quoteText,author);
+            if (quoteText.equals("") || author.equals("")){
+                model.addAttribute("message", ERROR_ADDING_QUOTE_MESSAGE);
+                return "status";
             }
-        } catch (Exception e){
-            System.out.println(e);
-            model.addAttribute("message", ERROR_ADDING_QUOTE_MESSAGE);
+
+            producer.addQuote2LocalTopic(new Quote(author, quoteText));
+            model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);
+
+        } catch (UnsentQuoteException e){
+            System.err.println(e);
+            //model.addAttribute("message", ERROR_ADDING_QUOTE_MESSAGE);
+            return String.format("redirect:%s/add?quote=%s&author=%s",remoteHost,quoteText,author);
         }
+
+
         if (!repository.availableConnection()) {
             return String.format("redirect:%s/add?quote=%s&author=%s", remoteHost, quoteText, author);
         }

@@ -25,21 +25,22 @@ public class InnerListeners  {
 
     @KafkaListener(id = "localListener", topics = "${kafka.local-topic-name}", group = "inner",containerFactory = "kafkaListenerContainerFactory")
     public void listenLocalTopic(Quote quote) {
-            try{
-                repository.addQuote(quote);
-                try {
-                    producer.addQuote2ReplicaTopic(quote);
-                } catch (UnsentQuoteException e){
-                    System.err.println("Error with adding quote to replica topic.");
-                }
-            }catch (ConnectException e){
-                try {
-                    producer.addQuote2ReserveTopic(quote);
-                } catch (UnsentQuoteException ex){
-                    System.err.println(quote + " was lost in listenerLocalTopic");
-                }
+        try {
+            producer.addQuote2ReplicaTopic(quote);
+        } catch (UnsentQuoteException e) {
+            System.err.println("Error with adding quote to replica topic.");
+        }
+        try {
+            repository.addQuote(quote);
+        } catch (ConnectException e) {
+            try {
+                producer.addQuote2ReserveTopic(quote);
+            } catch (UnsentQuoteException ex) {
+                System.err.println(quote + " was lost in listenerLocalTopic");
             }
+        }
     }
+
 
     @KafkaListener(id = "reserveListener", topics = "${kafka.reserve-topic-name}", group = "inner", containerFactory = "kafkaListenerContainerFactory")
     public void listenReserveTopic(ConsumerRecord<String, Quote> record) {

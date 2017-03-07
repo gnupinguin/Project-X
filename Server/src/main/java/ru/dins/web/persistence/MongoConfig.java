@@ -20,7 +20,7 @@ public class MongoConfig {
     MongoDbFactory mongoDbFactory() throws Exception {
         return new SimpleMongoDbFactory(
                 new MongoClient("localhost",
-                        MongoClientOptions.builder().socketTimeout(100).build()),
+                        MongoClientOptions.builder().socketTimeout(100).serverSelectionTimeout(1000).build()),
                 "QuotesDB");
     }
 
