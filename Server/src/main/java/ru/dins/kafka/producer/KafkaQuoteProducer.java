@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import ru.dins.kafka.producer.conf.ProducerConfiguration;
 import ru.dins.web.model.quote.Quote;
 
 /**
@@ -11,18 +12,11 @@ import ru.dins.web.model.quote.Quote;
  */
 @Service
 public class KafkaQuoteProducer implements QuoteProducer {
+    @Autowired
+    private KafkaTemplate<String, Quote> producer;
 
     @Autowired
-    KafkaTemplate<String, Quote> producer;
-
-    @Value("${kafka.local-topic-name}")
-    String localTopicName;
-
-    @Value("${kafka.replica-topic-name}")
-    String replicaTopicName;
-
-    @Value("${kafka.reserve-topic-name}")
-    String reserveTopicName;
+    private ProducerConfiguration configuration;
 
     private void addQuote2Topic(Quote quote, String topic) throws UnsentQuoteException {
         try{
@@ -34,16 +28,16 @@ public class KafkaQuoteProducer implements QuoteProducer {
 
     @Override
     public void addQuote2LocalTopic(Quote quote) throws UnsentQuoteException {
-        addQuote2Topic(quote, localTopicName);
+        addQuote2Topic(quote, configuration.getLocalTopicName());
     }
 
     @Override
     public void addQuote2ReserveTopic(Quote quote) throws UnsentQuoteException {
-        addQuote2Topic(quote, reserveTopicName);
+        addQuote2Topic(quote, configuration.getReserveTopicName());
     }
 
     @Override
     public void addQuote2ReplicaTopic(Quote quote) throws UnsentQuoteException {
-        addQuote2Topic(quote, replicaTopicName);
+        addQuote2Topic(quote, configuration.getReplicaTopicName());
     }
 }

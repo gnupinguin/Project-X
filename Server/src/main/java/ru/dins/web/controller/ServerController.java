@@ -1,14 +1,14 @@
 package ru.dins.web.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.dins.kafka.consumer.LoggersMessageStore;
+import static ru.dins.LoggersMessageStore.*;
+
 import ru.dins.kafka.producer.QuoteProducer;
 import ru.dins.kafka.producer.UnsentQuoteException;
 import ru.dins.web.persistence.QuoteRepository;
@@ -22,10 +22,8 @@ import java.util.List;
  * Created by gnupinguin on 19.02.17.
  */
 
-@Controller
+@Controller @Slf4j
 public class ServerController {
-
-    private  final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private QuoteRepository repository;
@@ -54,14 +52,14 @@ public class ServerController {
             quoteText = quoteText.trim();
             author = author.trim();
             if (quoteText.equals("") || author.equals("")){
-                model.addAttribute("message", LoggersMessageStore.ERROR_ADDING_QUOTE_MESSAGE);
+                model.addAttribute("message", ADDING_QUOTE_MESSAGE_ERROR);
                 return "status";
             }
             producer.addQuote2LocalTopic(new Quote(author, quoteText));
-            model.addAttribute("message", LoggersMessageStore.SUCCESS_ADDING_QUOTE_MESSAGE);
+            model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);
         } catch (UnsentQuoteException e){
-            logger.error(e.getMessage());
-            return String.format("redirect:%s/add?quote=%s&author=%s",remoteHost,quoteText,author);
+            log.error(e.getMessage());
+            return String.format("redirect:%s/add?quote=%s&author=%s", remoteHost, quoteText, author);
         }
         return "status";
     }
@@ -74,7 +72,7 @@ public class ServerController {
             model.addAttribute("quotes",  quotes);
             return "data";
         } catch (ConnectException e){
-            logger.warn(LoggersMessageStore.WARNING_REPOSITORY_CONNECTION_FAILED);
+            log.warn(REPOSITORY_CONNECTION_FAILED_WARNING);
             return "redirect:" + remoteHost + "/data";
         }
 

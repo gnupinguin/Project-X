@@ -20,7 +20,6 @@ import java.util.UnknownFormatFlagsException;
  * Created by gnupinguin on 19.02.17.
  */
 @Repository @NoArgsConstructor
-@ImportResource({"classpath*:ApplicationContext.xml"})
 public class QuoteRepository {
 
     @Value("${spring.data.mongodb.collection}")

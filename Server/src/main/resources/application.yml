@@ -7,12 +7,34 @@ spring:
       port: 27017
   mandatory-file-encoding: UTF-8
 server:
-  port: 8080
   remote-host: http://192.168.62.72:8080
+
 kafka:
   local-topic-name: quote-local
   replica-topic-name: quote-replica
   reserve-topic-name: quote-reserve
+
+  producer-conf:
+    bootstrap.servers: localhost:9092
+    retries: 0
+    batch.size: 16384
+    linger.ms: 1
+    buffer.memory: 33554432
+    max.block.ms: 10000 #for throw connect exception
+
+  consumer-conf:
+    auto.commit.interval.ms: 1000
+    session.timeout.ms: 30000
+    auto.offset.reset: earliest
+    inner:
+      enable.auto.commit: true
+      bootstrap.servers: localhost:9092
+      group.id: inner
+    outer:
+      enable.auto.commit: false
+      bootstrap.servers: localhost:9092
+      group.id: outer
+      client.id: outerListener
 
 
 
