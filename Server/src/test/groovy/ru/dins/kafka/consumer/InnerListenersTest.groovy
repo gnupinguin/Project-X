@@ -1,7 +1,6 @@
 package ru.dins.kafka.consumer
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
-import org.slf4j.Logger
 import ru.dins.kafka.producer.KafkaQuoteProducer
 import ru.dins.web.model.quote.Quote
 import ru.dins.web.persistence.QuoteRepository
