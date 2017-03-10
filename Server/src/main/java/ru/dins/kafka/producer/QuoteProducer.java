@@ -2,9 +2,6 @@ package ru.dins.kafka.producer;
 
 import ru.dins.web.model.quote.Quote;
 
-import java.io.Closeable;
-import java.util.concurrent.ExecutionException;
-
 /**
  * Created by gnupinguin on 20.02.17.
  */

@@ -4,17 +4,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 import ru.dins.web.model.quote.Quote;
 
 import java.net.ConnectException;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.util.List;
-import java.util.UnknownFormatFlagsException;
-
 
 /**
  * Created by gnupinguin on 19.02.17.
