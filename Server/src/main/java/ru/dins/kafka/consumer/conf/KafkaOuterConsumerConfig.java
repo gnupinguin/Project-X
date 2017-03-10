@@ -25,14 +25,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by gnupinguin on 06.03.17.
+ * Creating interaction between {@link OuterReplicaListener} object and replica topic consumer(outer group consumers).
+ * It enable auto start for outer group consumers
  */
 @Configuration @EnableKafka @Data @NoArgsConstructor
 public class KafkaOuterConsumerConfig {
-
+    /**
+     * Object with properties for consumer configuration.
+     * @see OuterConsumerConfig
+     */
     @Autowired
     private OuterConsumerConfig configuration;
 
+    /**
+     *
+     * @param topic Replica topic name for kafka-server.
+     * @return Bean of {@link KafkaMessageListenerContainer} with one {@link OuterReplicaListener} object as listener.
+     */
     @Bean
     public KafkaMessageListenerContainer<String, Quote> container(
             @Value("${kafka.replica-topic-name}") String topic){
@@ -42,6 +51,10 @@ public class KafkaOuterConsumerConfig {
         return new KafkaMessageListenerContainer<>(outerConsumerFactory(), containerProperties);
     }
 
+    /**
+     * @deprecated
+     * @return {@link KafkaListenerContainerFactory} for creating one consumer-listener.
+     */
     @Bean
     KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Quote>> outerKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Quote> factory = new ConcurrentKafkaListenerContainerFactory<>();
@@ -51,12 +64,19 @@ public class KafkaOuterConsumerConfig {
         return factory;
     }
 
+    /**
+     *
+     * @return {@link DefaultKafkaConsumerFactory} for replica topic consumers.
+     */
     @Bean
     public ConsumerFactory<String, Quote> outerConsumerFactory() {
         return new DefaultKafkaConsumerFactory<>(outerConsumerConfigs());
     }
 
-
+    /**
+     *
+     * @return Map with properties for replica topic consumer.
+     */
     @Bean
     public Map<String, Object> outerConsumerConfigs() {
         Map<String, Object> propsMap = new HashMap<>();
@@ -72,6 +92,10 @@ public class KafkaOuterConsumerConfig {
         return propsMap;
     }
 
+    /**
+     *
+     * @return Bean of {@link OuterReplicaListener}.
+     */
     @Bean
     public OuterReplicaListener outerReplicaListener(){
         return new OuterReplicaListener();

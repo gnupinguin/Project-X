@@ -19,6 +19,11 @@ import java.util.Map;
 
 /**
  * Created by gnupinguin on 06.03.17.
+ *
+ * The class is specific kafka-listener.
+ * For manipulating offsets, the class implementing {@code AcknowledgingMessageListener, ConsumerSeekAware}.
+ * @see AcknowledgingMessageListener
+ * @see ConsumerSeekAware
  */
 @Data @NoArgsConstructor @Slf4j
 public class OuterReplicaListener implements AcknowledgingMessageListener<String, Quote>, ConsumerSeekAware {
@@ -26,6 +31,13 @@ public class OuterReplicaListener implements AcknowledgingMessageListener<String
     @Autowired @NonNull
     private QuoteRepository repository;
 
+    /**
+     * This method reacts to event of quote-adding in a replica topic other(outer) kafka-server.
+     * It reads quote from replica topic outer kafka-server and trying to write message to database.
+     * If database not available, it don't commit offset of quote.
+     * @param data {@link ConsumerRecord metadata of quote} from kafka-server.
+     * @param acknowledgment {@link Acknowledgment callback} for commiting offset
+     */
     @Override
     public void onMessage(ConsumerRecord<String, Quote> data, Acknowledgment acknowledgment) {
         Quote quote = data.value();

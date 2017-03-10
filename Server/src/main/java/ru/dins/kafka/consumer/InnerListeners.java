@@ -17,18 +17,47 @@ import ru.dins.web.persistence.QuoteRepository;
 import java.net.ConnectException;
 
 /**
- * Created by gnupinguin on 04.03.17.
+ * The class contains two methods-listener of the local(inner) kafka-server.
  */
 @Service @Data @NoArgsConstructor @Slf4j
 public class InnerListeners  {
 
+    /**
+     * It's a producer for sending quotes to topics on kafka-server.
+     * @see KafkaQuoteProducer
+     */
     @Autowired @NonNull
     private KafkaQuoteProducer producer;
 
+    /**
+     * It's a client of repository for inserting quotes to database.
+     *  @see QuoteRepository
+     */
     @Autowired @NonNull
     private QuoteRepository repository;
 
-    @KafkaListener(id = "localListener", topics = "${kafka.local-topic-name}", group = "inner",containerFactory = "kafkaListenerContainerFactory")
+    /**
+     * <p>
+     *     This method reacts to event of quote-adding in a local topic.
+     * It reads quote from local topic and trying to write message to database.
+     * If database is not available, it trying to send quote on reserve topic of local kafka-server.
+     * If local kafka-server is not available, quote will be lost.
+     *
+     * <p>
+     *     For annotation  {@code @KafkaListener} using some parameters:
+     * <ul>
+     *     <li>
+     *         For kafka this method marked as {@code id = "localListener"}.
+     *     </li>
+     *     <li>
+     *         For detecting factory-bean of spring kafka using {@code containerFactory = "kafkaListenerContainerFactory"}
+     *     </li>
+     * </ul>
+     * Parameters {@code group} and {@code topics} are in application.yml
+     * @param quote the quote for writing to database.
+     */
+    @KafkaListener(id = "localListener", topics = "${kafka.local-topic-name}",
+            group = "${kafka.consumer-conf.inner.group.id}", containerFactory = "kafkaListenerContainerFactory")
     public void listenLocalTopic(Quote quote) {
         try {
             producer.addQuote2ReplicaTopic(quote);
@@ -47,10 +76,28 @@ public class InnerListeners  {
         }
     }
 
+    /**
+     * <p>
+     *     This method reacts to event of quote-adding in a reserve topic.
+     * It reads quote from reserve topic and trying to write message to database.
+     * If database is not available, it trying to send quote on reserve topic local kafka-server.
+     * If local kafka-server is not available, quote will be lost.
+     * <p>
+     *     For annotation  @KafkaListener using some parameters:<ul>
+     *         <li>
+     *         For kafka this method marked as {@code id = "reserveListener"}.
+     *     </li>
+     *     <li>
+     *         For detecting factory-bean of spring kafka using {@code containerFactory = "kafkaListenerContainerFactory"}
+     *     </li>
+     * </ul>
+     * Parameters {@code group} and {@code topics} are in application.yml
+     * @param quote the quote for writing to database.
+     */
+    @KafkaListener(id = "reserveListener", topics = "${kafka.reserve-topic-name}",
+            group = "${kafka.consumer-conf.inner.group.id}", containerFactory = "kafkaListenerContainerFactory")
+    public void listenReserveTopic(Quote quote) {
 
-    @KafkaListener(id = "reserveListener", topics = "${kafka.reserve-topic-name}", group = "inner", containerFactory = "kafkaListenerContainerFactory")
-    public void listenReserveTopic(ConsumerRecord<String, Quote> record) {
-        Quote quote = record.value();
         try{
             repository.addQuote(quote);
         } catch (ConnectException e){

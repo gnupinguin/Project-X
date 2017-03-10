@@ -19,28 +19,45 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by gnupinguin on 04.03.17.
+ * Creating interaction between {@link InnerListeners} and local topic, reserve topic consumers(inner group consumers).
+ * It enable auto start for inner group consumers
  */
-
 @Configuration @EnableKafka
 public class KafkaInnerConsumersConfig {
+    /**
+     * Object with properties for consumer configuration.
+     * @see InnerConsumerConfig
+     */
     @Autowired
     private InnerConsumerConfig configuration;
 
+    /**
+     *
+     * @return {@link KafkaListenerContainerFactory} for creating two consumer-listeners.
+     */
     @Bean
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Quote>> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Quote> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
-        factory.setConcurrency(3);
+        factory.setConcurrency(2);
         factory.getContainerProperties().setPollTimeout(3000);
         return factory;
     }
 
+    /**
+     *
+     * @return {@link DefaultKafkaConsumerFactory} for local topic and reserve topic consumers.
+     */
     @Bean
     public ConsumerFactory<String, Quote> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
 
+    /**
+     *
+     * @return Map with properties for local topic and reserve topic consumers.
+     * It using {@link InnerConsumerConfig} for properties source.
+     */
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> propsMap = new HashMap<>();
@@ -55,6 +72,9 @@ public class KafkaInnerConsumersConfig {
         return propsMap;
     }
 
+    /**
+     * @return Bean of InnerListeners class.
+     */
     @Bean
     public InnerListeners innerListeners() {
         return new InnerListeners();

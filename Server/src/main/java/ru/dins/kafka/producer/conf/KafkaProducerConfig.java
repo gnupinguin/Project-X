@@ -17,17 +17,32 @@ import ru.dins.web.model.quote.QuoteSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Creating interaction between {@link KafkaTemplate} and producer for topics on local kafka-server.
+ * It enable auto start for producer.
+ */
 @Configuration @Data
 @NoArgsConstructor @EnableKafka
 public class KafkaProducerConfig {
+    /**
+     * @see ProducerConfiguration
+     */
     @Autowired
     private ProducerConfiguration configuration;
 
+    /**
+     *
+     * @return {@link DefaultKafkaProducerFactory} for creating producer.
+     */
     @Bean
     public ProducerFactory<String, Quote> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
+    /**
+     *
+     * @return Map with properties for producer.
+     */
     @Bean
     public Map<String, Object> producerConfigs() {
         Map<String, Object> props = new HashMap<>();
@@ -42,6 +57,10 @@ public class KafkaProducerConfig {
         return props;
     }
 
+    /**
+     *
+     * @return Bean of {@link KafkaTemplate}.
+     */
     @Bean
     public KafkaTemplate<String, Quote> kafkaTemplate() {
         return new KafkaTemplate<String, Quote>(producerFactory());
