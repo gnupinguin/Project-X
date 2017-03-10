@@ -32,7 +32,6 @@ public class MongoConfig {
                 new MongoClient(host,
                         MongoClientOptions.
                                 builder().
-                                socketTimeout(100).
                                 serverSelectionTimeout(1000).build()),
                 databaseName);
     }
