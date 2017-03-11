@@ -12,7 +12,9 @@ import java.net.ConnectException;
 import java.util.List;
 
 /**
- * Created by gnupinguin on 19.02.17.
+ * A simple class for controlling access to the MongoDB.
+ * Property of collection name is application.yml.
+ * As bean for {@link MongoTemplate} using {@link MongoConfig#anotherMongoTemplate()} bean.
  */
 @Repository @NoArgsConstructor
 public class QuoteRepository {
@@ -24,6 +26,11 @@ public class QuoteRepository {
     @Qualifier("anotherMongoTemplate")
     private MongoTemplate mongoTemplate;
 
+    /**
+     *
+     * @return List of all quotes from database.
+     * @throws ConnectException On connection to MongoDB failed.
+     */
     public List<Quote> findAll() throws ConnectException {
         try {
             return mongoTemplate.findAll(Quote.class, quotesCollection);
@@ -31,6 +38,12 @@ public class QuoteRepository {
             throw new ConnectException("Error connect to DB when finding  quotes");
         }
     }
+
+    /**
+     * Adding quote to database.
+     * @param quote Quote for adding to database.
+     * @throws ConnectException On connection to MongoDB failed.
+     */
     public void addQuote(Quote quote) throws ConnectException {
         try{
             mongoTemplate.insert(quote, quotesCollection);

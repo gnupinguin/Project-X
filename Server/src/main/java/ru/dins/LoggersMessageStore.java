@@ -1,10 +1,8 @@
 package ru.dins;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * Created by key on 07.03.2017.
+ * Class with error/ warning messages for logger.
  */
 public class LoggersMessageStore {
     public static final String ADDING_QUOTE_MESSAGE_ERROR = "When creating quotes error occurred!";

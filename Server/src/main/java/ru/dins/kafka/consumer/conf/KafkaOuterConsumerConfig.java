@@ -9,12 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.AbstractMessageListenerContainer;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.kafka.listener.config.ContainerProperties;
 import ru.dins.kafka.consumer.OuterReplicaListener;
@@ -49,19 +46,6 @@ public class KafkaOuterConsumerConfig {
         containerProperties.setMessageListener(outerReplicaListener());
         containerProperties.setAckMode(AbstractMessageListenerContainer.AckMode.MANUAL_IMMEDIATE);
         return new KafkaMessageListenerContainer<>(outerConsumerFactory(), containerProperties);
-    }
-
-    /**
-     * @deprecated
-     * @return {@link KafkaListenerContainerFactory} for creating one consumer-listener.
-     */
-    @Bean
-    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Quote>> outerKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Quote> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(outerConsumerFactory());
-        factory.setConcurrency(1);
-        factory.getContainerProperties().setPollTimeout(3000);
-        return factory;
     }
 
     /**

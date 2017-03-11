@@ -1,9 +1,10 @@
 package ru.dins.kafka.producer;
 
 /**
- * Created by gnupinguin on 04.03.17.
+ * An exception occurred when getting an inability to send a quote.
  */
 public class UnsentQuoteException extends Exception {
+
     public UnsentQuoteException() {
     }
 

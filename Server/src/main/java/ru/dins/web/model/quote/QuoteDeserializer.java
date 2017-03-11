@@ -5,7 +5,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 
 /**
- * Created by gnupinguin on 16.02.17.
+ * Class for deserialize quotes for kafka consumer.
  */
 public class QuoteDeserializer extends JsonDeserializer<Quote> {
 }

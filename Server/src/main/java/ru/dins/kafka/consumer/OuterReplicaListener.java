@@ -18,8 +18,6 @@ import java.net.ConnectException;
 import java.util.Map;
 
 /**
- * Created by gnupinguin on 06.03.17.
- *
  * The class is specific kafka-listener.
  * For manipulating offsets, the class implementing {@code AcknowledgingMessageListener, ConsumerSeekAware}.
  * @see AcknowledgingMessageListener

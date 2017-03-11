@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import java.net.ConnectException;
  */
 @Service @Data @NoArgsConstructor @Slf4j
 public class InnerListeners  {
-
     /**
      * It's a producer for sending quotes to topics on kafka-server.
      * @see KafkaQuoteProducer

@@ -5,6 +5,7 @@ spring:
       collection: quotes
       host: localhost
       port: 27017
+      time-wait: 1000
   mandatory-file-encoding: UTF-8
 server:
   remote-host: http://192.168.62.72:8080

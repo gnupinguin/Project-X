@@ -13,7 +13,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 
 /**
- * Created by gnupinguin on 06.03.17.
+ * Simple alternative for {@link MongoTemplate}
+ * Properties {@code host}, {@code port} and {@code databaseName} are in application.yml.
+ * After {@code serverSelectionTimeout} ms waiting connection to MongoDB server, an exception will be thrown.
+ * The option is application.yml
  */
 @Configuration @Data @NoArgsConstructor
 public class MongoConfig {
@@ -26,18 +29,25 @@ public class MongoConfig {
     @NonNull @Value("${spring.data.mongodb.database}")
     private String databaseName;
 
+    @Value("${spring.data.mongodb.time-wait}")
+    private int serverSelectionTimeout;
+
+    /**
+     *
+     * @return Bean of{@link MongoDbFactory} with option {@code serverSelectionTimeout} for throwing time wait exception.
+     */
     public @Bean
-    MongoDbFactory mongoDbFactory() throws Exception {
+    MongoDbFactory mongoDbFactory() {
         return new SimpleMongoDbFactory(
                 new MongoClient(host,
                         MongoClientOptions.
                                 builder().
-                                serverSelectionTimeout(1000).build()),
+                                serverSelectionTimeout(serverSelectionTimeout).build()),
                 databaseName);
     }
 
     @Bean
-    public MongoTemplate anotherMongoTemplate() throws Exception {
+    public MongoTemplate anotherMongoTemplate() {
         MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
         return mongoTemplate;
 
