@@ -30,7 +30,7 @@ class OuterReplicaListenerTest extends Specification {
         outerReplicaListener.consumerSeekCallback = consumerSeekCallback
     }
 
-    def "test1"() {
+    def "error on connection"() {
         given:
         repository.addQuote(quote) >> {throw new ConnectException()}
 

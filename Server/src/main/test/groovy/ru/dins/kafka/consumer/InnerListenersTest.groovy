@@ -35,12 +35,12 @@ class InnerListenersTest extends Specification {
         1 * producer.addQuote2ReserveTopic(quote)
     }
 
-    def "test2"() {
+    def "if ConnectException then add to reserve topic"() {
         given:
         repository.addQuote(quote) >> {throw new ConnectException()}
 
         when:
-        listeners.listenReserveTopic(consumerRecord)
+        listeners.listenReserveTopic(quote)
 
         then:
         1 * producer.addQuote2ReserveTopic(quote)
