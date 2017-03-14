@@ -1,4 +1,9 @@
 spring:
+  profile:
+    active: default
+#    active: test
+  inegrationtest:
+    database: QuotesTestDB
   data:
     mongodb:
       database: QuotesDB
@@ -8,7 +13,7 @@ spring:
       time-wait: 1000
   mandatory-file-encoding: UTF-8
 server:
-  remote-host: http://192.168.62.72:8080
+  remote-host: http://localhost:8080
 
 kafka:
   local-topic-name: quote-local

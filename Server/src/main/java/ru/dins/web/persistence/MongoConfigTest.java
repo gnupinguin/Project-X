@@ -20,15 +20,15 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
  * The option is application.yml
  */
 @Configuration @Data @NoArgsConstructor
-@Profile({"default"})
-public class MongoConfig {
+@Profile({"test"})
+public class MongoConfigTest {
     @NonNull @Value("${spring.data.mongodb.host}")
     private String host;
 
     @Value("${spring.data.mongodb.port}")
     private int port;
 
-    @NonNull @Value("${spring.data.mongodb.database}")
+    @NonNull @Value("${spring.inegrationtest.database}")
     private String databaseName;
 
     @Value("${spring.data.mongodb.time-wait}")
