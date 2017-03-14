@@ -20,7 +20,7 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
  * The option is application.yml
  */
 @Configuration @Data @NoArgsConstructor
-@Profile({"default"})
+@Profile("dev")
 public class MongoConfig {
     @NonNull @Value("${spring.data.mongodb.host}")
     private String host;
