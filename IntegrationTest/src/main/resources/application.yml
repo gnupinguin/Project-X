@@ -1,0 +1,3 @@
+test:
+  first-host: http://localhost:8080
+  second-host: http://localhost:8080
