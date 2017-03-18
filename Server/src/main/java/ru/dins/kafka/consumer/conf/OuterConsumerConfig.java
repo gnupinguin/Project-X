@@ -14,17 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @NoArgsConstructor
 @Configuration
 public class OuterConsumerConfig {
-    /**
-     * @see org.apache.kafka.clients.consumer.ConsumerConfig#ENABLE_AUTO_COMMIT_DOC
-     */
-    @Value("${kafka.consumer-conf.outer.enable.auto.commit}")
-    private String enableAutoCommit;
-
-    /**
-     * @see org.apache.kafka.clients.consumer.ConsumerConfig#AUTO_COMMIT_INTERVAL_MS_DOC
-     */
-    @Value("${kafka.consumer-conf.auto.commit.interval.ms}")
-    private String autoCommitIntervalMs;
 
     /**
      * @see org.apache.kafka.clients.consumer.ConsumerConfig#SESSION_TIMEOUT_MS_DOC

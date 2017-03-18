@@ -20,6 +20,8 @@ import java.util.Map;
 /**
  * Creating interaction between {@link KafkaTemplate} and producer for topics on local kafka-server.
  * It enable auto start for producer.
+ *
+ * @author Pavlov Ilja
  */
 @Configuration @Data
 @NoArgsConstructor @EnableKafka

@@ -16,10 +16,14 @@ import ru.dins.web.model.quote.Quote;
 
 import java.net.ConnectException;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
  * It's controller for preparing client requests.
+ *
+ * @author Ilja Pavlov
+ * @author Olga Taranova
  */
 @Controller @Slf4j
 public class ServerController {
@@ -74,7 +78,8 @@ public class ServerController {
                 model.addAttribute("message", ADDING_QUOTE_MESSAGE_ERROR);
                 return "status";
             }
-            producer.addQuote2LocalTopic(new Quote(author, text));
+
+            producer.addQuote2LocalTopic(new Quote(UUID.randomUUID(), author, text));
             model.addAttribute("message", SUCCESS_ADDING_QUOTE_MESSAGE);
         } catch (UnsentQuoteException e){
             log.error(e.getMessage());
@@ -100,7 +105,6 @@ public class ServerController {
             log.warn(REPOSITORY_CONNECTION_FAILED_WARNING);
             return "redirect:" + remoteHost + "/data";
         }
-
     }
 
 }

@@ -18,6 +18,8 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
  * Properties {@code host}, {@code port} and {@code databaseName} are in application.yml.
  * After {@code serverSelectionTimeout} ms waiting connection to MongoDB server, an exception will be thrown.
  * The option is application.yml
+ *
+ * @author Ilja Pavlov
  */
 @Configuration @Data @NoArgsConstructor
 @Profile("dev")

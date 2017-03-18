@@ -3,6 +3,8 @@ package ru.dins;
 
 /**
  * Class with error/ warning messages for logger.
+ *
+ * @author Olga Taranova
  */
 public class LoggersMessageStore {
     public static final String ADDING_QUOTE_MESSAGE_ERROR = "When creating quotes error occurred!";

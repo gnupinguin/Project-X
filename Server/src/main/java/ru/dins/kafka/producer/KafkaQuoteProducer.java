@@ -1,5 +1,6 @@
 package ru.dins.kafka.producer;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,11 @@ import ru.dins.web.model.quote.Quote;
 /**
  * Implementation {@code QuoteProducer}.
  * @see QuoteProducer
+ *
+ * @author Olga Taranova
+ * @author Ilja Pavlov
  */
-@Service
+@Service @Data
 public class KafkaQuoteProducer implements QuoteProducer {
     /**
      * Kafka producer for sending quotes.

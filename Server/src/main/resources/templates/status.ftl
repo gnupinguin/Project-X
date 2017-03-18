@@ -1,3 +1,6 @@
+<!--author: Daria Bykova-->
+<!--author: Olga Taranova-->
+<!--author: Ilja Pavlov-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,19 +11,6 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Status</title>
 </head>
-<#--<style>-->
-      <#--body{-->
-      <#--background: url(images/baground.jpg);-->
-      <#--background-size: cover;-->
-      <#--font-family: "Montserrat",sans-serif;-->
-      <#--font-size: 16px;-->
-      <#--background-position: center center;-->
-      <#--background-repeat: no-repeat;-->
-      <#--background-attachment: fixed;-->
-      <#--font-family: "Montserrat",sans-serif;-->
-      <#--font-size: 16px;-->
-      <#--}-->
-   <#--</style>-->
 <body>
 <h1 align="center"> ${message}</h1>
 <p><a href="/create"><font color="black" size=5>Add a new quotation</font></a></p>

@@ -12,12 +12,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data @NoArgsConstructor @Configuration
 public class InnerConsumerConfig {
-    /**
-     * @see org.apache.kafka.clients.consumer.ConsumerConfig#ENABLE_AUTO_COMMIT_DOC
-     */
-    @NonNull
-    @Value("${kafka.consumer-conf.inner.enable.auto.commit}")
-    private String enableAutoCommit;
 
     /**
      * @see org.apache.kafka.clients.consumer.ConsumerConfig#AUTO_COMMIT_INTERVAL_MS_DOC

@@ -16,18 +16,24 @@ import ru.dins.web.persistence.QuoteRepository;
 
 import java.net.ConnectException;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * The class is specific kafka-listener.
  * For manipulating offsets, the class implementing {@code AcknowledgingMessageListener, ConsumerSeekAware}.
  * @see AcknowledgingMessageListener
  * @see ConsumerSeekAware
+ *
+ * @author Ilja Pavlov
  */
-@Data @NoArgsConstructor @Slf4j
+@Slf4j @Data @NoArgsConstructor
 public class OuterReplicaListener implements AcknowledgingMessageListener<String, Quote>, ConsumerSeekAware {
+
     private ConsumerSeekCallback consumerSeekCallback;
+
     @Autowired @NonNull
     private QuoteRepository repository;
+
 
     /**
      * This method reacts to event of quote-adding in a replica topic other(outer) kafka-server.
@@ -39,6 +45,7 @@ public class OuterReplicaListener implements AcknowledgingMessageListener<String
     @Override
     public void onMessage(ConsumerRecord<String, Quote> data, Acknowledgment acknowledgment) {
         Quote quote = data.value();
+        quote.setId(UUID.randomUUID());
         try{
             repository.addQuote(quote);
             acknowledgment.acknowledge();

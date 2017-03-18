@@ -2,6 +2,8 @@ package ru.dins.kafka.producer;
 
 /**
  * An exception occurred when getting an inability to send a quote.
+ *
+ * @author Ilja Pavlov
  */
 public class UnsentQuoteException extends Exception {
 

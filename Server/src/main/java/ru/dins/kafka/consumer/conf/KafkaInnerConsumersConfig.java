@@ -21,6 +21,8 @@ import java.util.Map;
 /**
  * Creating interaction between {@link InnerListeners} and local topic, reserve topic consumers(inner group consumers).
  * It enable auto start for inner group consumers
+ *
+ * @author Ilja Pavlov
  */
 @Configuration @EnableKafka
 public class KafkaInnerConsumersConfig {
@@ -62,7 +64,7 @@ public class KafkaInnerConsumersConfig {
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> propsMap = new HashMap<>();
         propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, configuration.getBootstrapServers());
-        propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, configuration.getEnableAutoCommit());
+        propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
         propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, configuration.getAutoCommitIntervalMs());
         propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, configuration.getSessionTimeoutMs());
         propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);

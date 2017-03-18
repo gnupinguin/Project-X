@@ -17,6 +17,9 @@ import java.net.ConnectException;
 
 /**
  * The class contains two methods-listener of the local(inner) kafka-server.
+ *
+ * @author Daria Bykova
+ * @author Ilja Pavlov
  */
 @Service @Data @NoArgsConstructor @Slf4j
 public class InnerListeners  {

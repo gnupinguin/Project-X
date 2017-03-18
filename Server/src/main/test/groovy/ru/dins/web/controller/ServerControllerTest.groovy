@@ -8,6 +8,9 @@ import ru.dins.web.persistence.QuoteRepository
 import spock.lang.Specification
 import spock.lang.Subject
 
+/**
+ * @author Daria Bykova
+ */
 class ServerControllerTest extends Specification {
     public static final String QUOTETEXT = 'quote'
     public static final String AUTOR = 'autor'

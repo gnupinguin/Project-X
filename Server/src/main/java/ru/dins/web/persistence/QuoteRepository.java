@@ -15,6 +15,8 @@ import java.util.List;
  * A simple class for controlling access to the MongoDB.
  * Property of collection name is application.yml.
  * As bean for {@link MongoTemplate} using {@link MongoConfig#anotherMongoTemplate()} bean.
+ *
+ * @author Ilja Pavlov
  */
 @Repository @NoArgsConstructor
 public class QuoteRepository {

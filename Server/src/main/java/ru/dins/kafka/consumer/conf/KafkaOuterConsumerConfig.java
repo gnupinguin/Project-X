@@ -24,6 +24,8 @@ import java.util.Map;
 /**
  * Creating interaction between {@link OuterReplicaListener} object and replica topic consumer(outer group consumers).
  * It enable auto start for outer group consumers
+ *
+ * @author Ilja Pavlov
  */
 @Configuration @EnableKafka @Data @NoArgsConstructor
 public class KafkaOuterConsumerConfig {
@@ -65,8 +67,7 @@ public class KafkaOuterConsumerConfig {
     public Map<String, Object> outerConsumerConfigs() {
         Map<String, Object> propsMap = new HashMap<>();
         propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, configuration.getBootstrapServers());
-        propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, configuration.getEnableAutoCommit());
-        propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, configuration.getAutoCommitIntervalMs());
+        propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, configuration.getSessionTimeoutMs());
         propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, QuoteDeserializer.class);

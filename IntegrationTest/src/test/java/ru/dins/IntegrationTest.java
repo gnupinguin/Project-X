@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
- * Created by key on 09.03.2017.
+ * @author Olga Taranova
  */
 //@RunWith(SpringRunner.class)
 @RunWith(SpringJUnit4ClassRunner.class)

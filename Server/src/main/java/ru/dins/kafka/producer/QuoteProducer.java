@@ -4,6 +4,8 @@ import ru.dins.web.model.quote.Quote;
 
 /**
  * The interface determinate basic methods for sending quotes to kafka-server.
+ *
+ * @author Ilja Pavlov
  **/
 public interface QuoteProducer{
     /**

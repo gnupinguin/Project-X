@@ -1,3 +1,6 @@
+<!--author: Daria Bykova-->
+<!--author: Olga Taranova-->
+<!--author: Ilja Pavlov-->
 <!DOCTYPE html>
 <html lang="en">
    <head>
@@ -9,19 +12,6 @@
   <script src="js/bootstrap.min.js"></script>
       <title>Quotations</title>
    </head>
-   <#--<style>-->
-      <#--body{-->
-      <#--background: url(images/database.jpg);-->
-      <#--background-size: cover;-->
-      <#--font-family: "Montserrat",sans-serif;-->
-      <#--font-size: 16px;-->
-      <#--background-position: center center;-->
-      <#--background-repeat: no-repeat;-->
-      <#--background-attachment: fixed;-->
-      <#--font-family: "Montserrat",sans-serif;-->
-      <#--font-size: 32px;-->
-      <#--}-->
-   <#--</style>-->
 <body>
    <div class="container">
   <h1 align="center">MY COLLECTION</h1><br>

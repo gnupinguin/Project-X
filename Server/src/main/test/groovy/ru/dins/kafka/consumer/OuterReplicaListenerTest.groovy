@@ -9,7 +9,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 /**
- * Created by dasha on 07.03.17.
+ * @author Daria Bykova
  */
 class OuterReplicaListenerTest extends Specification {
     public static final String WARNING = 'WARNING'

@@ -7,6 +7,9 @@ import ru.dins.web.persistence.QuoteRepository
 import spock.lang.Specification
 import spock.lang.Subject
 
+/**
+ * @author Daria Bykova
+ */
 class InnerListenersTest extends Specification {
     public static final String TOPIC = 'topic'
     public static final int PARTITION = 1
